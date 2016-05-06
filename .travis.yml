@@ -1,4 +1,13 @@
 language: java
+before_install:
+- git clone https://git@github.com/levilime/tygron.git
+- cd tygron
+- git checkout setuptravis
+install:
+- mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn test -Duser="$email" -Dpwd="$password"
+- cd ..
+- mv tygron/environment/target/tygronenv-*-jar-with-dependencies.jar .
 # make app.properties through travis before script start, needed for user validation
 before_script:
 - mkdir target
