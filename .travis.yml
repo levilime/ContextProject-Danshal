@@ -2,12 +2,16 @@ language: java
 before_install:
 - git clone https://git@github.com/levilime/tygron.git
 - cd tygron
+#TODO instead of checking out to a branch this should be the master after merging of functionality
 - git checkout setuptravis
 install:
+# build and test the connector (TODO it is not necessary to test the connector here)
 - mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 - mvn test -Duser="$email" -Dpwd="$password"
 - cd ..
+# move generated env jar to the same folder as the test file(s)
 - mv tygron/environment/target/tygronenv-*-jar-with-dependencies.jar .
+
 # make app.properties through travis before script start, needed for user validation
 before_script:
 - mkdir target
@@ -17,7 +21,7 @@ before_script:
 script:
 # run the Goal Test with a 60s timeout
 - timeout -s 0 60 java -cp com.github.goalhub.runtime.jar-with-dependencies_2.0.2.20160418123535.jar goal.tools.Run test.test2g -v > result.txt
-#if there is a test failed then the build fails
+# if there is a test failed then the build fails
 - grep "test failed:" result.txt && $? || echo 0
 # check that the tests actually passed otherwise the build still fails
 - grep "test passed:" result.txt && echo 0 || $?
