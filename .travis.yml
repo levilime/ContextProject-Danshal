@@ -7,7 +7,6 @@ before_install:
 install:
 # build and test the connector (TODO it is not necessary to test the connector here)
 - mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-- mvn test -Duser="$email" -Dpwd="$password"
 - cd ..
 # move generated env jar to the same folder as the test file(s)
 - mv tygron/environment/target/tygronenv-*-jar-with-dependencies.jar .
