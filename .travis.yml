@@ -20,7 +20,7 @@ before_script:
 - cd ..
 script:
 # run the Goal Test with a 60s timeout
-- timeout 60 java -cp com.github.goalhub.runtime.jar-with-dependencies_2.0.2.20160418123535.jar goal.tools.Run test.test2g -v > result.txt
+- timeout 60 java -cp com.github.goalhub.runtime.jar-with-dependencies_2.0.2.20160418123535.jar goal.tools.Run test.test2g -v > result.txt || echo 0
 # if there is a test failed then the build fails
 - grep "test failed:" result.txt && $? || echo 0
 # check that the tests actually passed otherwise the build still fails
