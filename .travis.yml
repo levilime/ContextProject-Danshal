@@ -5,7 +5,7 @@ before_install:
 #TODO instead of checking out to a branch this should be the master after merging of functionality
 - git checkout setuptravis
 install:
-# build and test the connector (TODO it is not necessary to test the connector here)
+# build the connector, testing of the connector is done in the tygron repo CI.
 - mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 - cd ..
 # move generated env jar to the same folder as the test file(s)
