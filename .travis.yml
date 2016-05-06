@@ -1,4 +1,12 @@
 language: java
+before_install:
+- git clone https://git@github.com/levilime/tygron.git
+- cd tygron
+- git checkout setuptravis
+install:
+- mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn test -Duser="$email" -Dpwd="$password"
+- cd ..
 script:
 # run the Goal Test with a 60s timeout
 - timeout 60 java -cp com.github.goalhub.runtime.jar-with-dependencies_2.0.2.20160418123535.jar goal.tools.Run test.test2g -v > result.txt
