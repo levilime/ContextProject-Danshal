@@ -20,4 +20,6 @@ Haoming Yeh | [hmyeh](https://github.com/hmyeh/)
 ## Deliverables
 Sprint plan | Sprint retrospective | Other
 --- | --- | ---
-[#1](../Deliverables/SE Documents/Sprint Plans/Week 1/SprintPlanWeek1.pdf) |
+[#1](https://github.com/levilime/ContextProject-Danshal/blob/master/Deliverables/SE%20Documents/Sprint%20Plans/Week%201/SprintPlan1.pdf) | [#1](https://github.com/levilime/ContextProject-Danshal/blob/master/Deliverables/SE%20Documents/Sprint%20Retrospectives/Week%201/SprintRetrospective1.pdf)
+[#2](https://github.com/levilime/ContextProject-Danshal/blob/master/Deliverables/SE%20Documents/Sprint%20Plans/Week%202/SprintPlan2.pdf) | [#2](https://github.com/levilime/ContextProject-Danshal/blob/master/Deliverables/SE%20Documents/Sprint%20Retrospectives/Week%202/SprintRetrospective2.pdf)
+[#3](https://github.com/levilime/ContextProject-Danshal/blob/master/Deliverables/SE%20Documents/Sprint%20Plans/Week%203/SprintPlan3.pdf) | xxx
