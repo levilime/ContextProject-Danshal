@@ -3,8 +3,8 @@
 Danshal/VH-2 is a group participating in the Contextproject Computer Science course on the TU Delft.
 
 ## Team
-Name | GitHub 
---- | --- 
+Name | GitHub
+--- | ---
 Levi Aanholt |  [Levilime](https://github.com/levilime/)
 Nick Cleintuar | [NickTUD](https://github.com/NickTUD/)
 Diony Tadema| [dionytadema](https://github.com/dionytadema/)
@@ -20,5 +20,4 @@ Haoming Yeh | [hmyeh](https://github.com/hmyeh/)
 ## Deliverables
 Sprint plan | Sprint retrospective | Other
 --- | --- | ---
-[#1](../Deliverables/SE Documents/Sprint Plans/Week 1/SprintPlanWeek1) | 
-
+[#1](../Deliverables/SE Documents/Sprint Plans/Week 1/SprintPlanWeek1.pdf) |
