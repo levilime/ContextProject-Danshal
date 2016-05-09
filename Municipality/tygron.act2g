@@ -1,5 +1,8 @@
 use dummy as knowledge.
 
+%%% List of applicable actions %%%
+
+% Build a structure, provide the specific Id, numbers of levels, and dimensions.
 define	building_plan_construction(Id, Level, MultiPolygon) with
    pre{ true }
    post{ true }
