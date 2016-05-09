@@ -2,8 +2,6 @@ language: java
 before_install:
 - git clone https://git@github.com/levilime/tygron.git
 - cd tygron
-#TODO instead of checking out to a branch this should be the master after merging of functionality
-- git checkout setuptravis
 install:
 # build the connector, testing of the connector is done in the tygron repo CI.
 - mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
