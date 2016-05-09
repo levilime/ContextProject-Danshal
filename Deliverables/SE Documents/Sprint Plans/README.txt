@@ -1,0 +1,1 @@
+Name the sprint plan as SprintPlanX.pdf where X matches the week of the quarter it is made in.
