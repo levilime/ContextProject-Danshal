@@ -1,6 +1,6 @@
 language: java
 before_install:
-- git clone https://git@github.com/levilime/contextvh.git tygron
+- git clone https://git@github.com/levilime/tygron.git tygron
 - cd tygron
 install:
 # build the connector, testing of the connector is done in the tygron repo CI.
