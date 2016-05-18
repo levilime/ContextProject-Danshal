@@ -1,7 +1,9 @@
 language: java
 before_install:
-- git clone https://git@github.com/levilime/contextvh.git tygron
+- git clone https://github.com/eishub/tygron.git tygron
 - cd tygron
+- git checkout context
+- git pull origin context
 install:
 # build the connector, testing of the connector is done in the tygron repo CI.
 - mvn -pl "!doc" install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
