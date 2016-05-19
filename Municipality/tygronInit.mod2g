@@ -3,9 +3,26 @@ use dummy as beliefs.
 module tygronInit {
 		%%% Is execute when the agent starts%%%
 		
+		%%% Inserts for each stakeholder their basic information
+		forall percept(stakeholders(List)), bel(member(SubList, List), member(stakeholder(ShID,Name,StartBudget,Income), SubList)) 
+			do insert(stakeholder(ShID,Name,StartBudget,Income)).
+		
+		%%% Inserts for each stakeholder their basic indicator information.
+		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(ShID,IndWeights), SubList)) 
+			do insert(indicatorLink(ShID,IndWeights)).
+		
+		
+		%%% For each indicator in the game, give it's start value and target.
+		forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List)) do insert(indicator(ID,Current,Target)).
+		
+		
+		
+		
+		
+		
+		%%% Code from Wouter%%%
 		if true then insert(settings([])).
 		if true then insert(functions([])).
-		if true then insert(stakeholders([])).
 		if true then insert(buildings(none)).
 		
 }
