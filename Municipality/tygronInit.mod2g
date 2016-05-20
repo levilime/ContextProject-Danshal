@@ -3,20 +3,25 @@ use dummy as beliefs.
 module tygronInit {
 		%%% Is execute when the agent starts%%%
 		
-		%%% Inserts for each stakeholder their basic information
-		forall percept(stakeholders(List)), bel(member(SubList, List), member(stakeholder(ShID,Name,StartBudget,Income), SubList)) 
-			do insert(stakeholder(ShID,Name,StartBudget,Income)).
+		%%% Inserts for each stakeholder their basic information.
+		forall percept(stakeholders(List)), bel(member(SubList, List), 
+			member(stakeholder(ShID,Name,StartBudget,Income), SubList)) do insert(stakeholder(ShID,Name,StartBudget,Income)).
 		
 		%%% Inserts for each stakeholder their basic indicator information.
 		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(ShID,IndWeights), SubList)) 
 			do insert(indicatorLink(ShID,IndWeights)).
 		
+		%%% For each indicator in the game, insert its start value and target.
+		forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List))
+			do insert(indicator(ID,Current,Target)).
 		
-		%%% For each indicator in the game, give it's start value and target.
-		forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List)) do insert(indicator(ID,Current,Target)).
+		%%% For each zones in the game, insert its basic information.
+		forall percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
+			do insert(zone(ID,Name,Floors,Size,CategoriesList)).
 		
-		
-		
+		%%% For each new building, insert its basic information.
+		forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List))
+			do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors)).
 		
 		
 		
