@@ -26,8 +26,8 @@ module tygronInit {
 		
 		
 		%%% Code from Wouter%%%
+		% Inserts an initial belief so the send on change rules work which are mentioned in the event module.
 		if true then insert(settings([])).
 		if true then insert(functions([])).
-		if true then insert(buildings(none)).
 		
 }
