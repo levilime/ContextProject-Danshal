@@ -1,0 +1,12 @@
+use dummy as knowledge.
+use tygron as actionspec.
+use somegoal as goals.
+
+module green {
+	%%%% Build green and parks to satisfy green indicator %%%%
+	
+	if bel(self(SId),indicator_link(SId,LinkIndicator),member([IndId,'Gemeente Groen',IndWeight],LinkIndicator))
+		then insert(greenId(IndId)).
+	
+	forall bel(greenId(IndId), zone_link(ZoneId, IndId, Current, Target), Progress is Current/Target) do adopt(buildPark(ZoneId, Progress)).
+}
