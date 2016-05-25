@@ -1,14 +1,46 @@
 use dummy as knowledge.
 
 module tygronEvents {
-	%%%%% Percept Processing %%%%%
 	
-	% Delete first, in case X is Y.
+	%If somehow new indicators appear in the list, add them to our belief base.
+	forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List), not(indicator(ID,_,_))) 
+		do insert(indicator(ID,Current,Target)).
+		
+	%Every cycle deletes old values of the indicator and inserts the new one if there are any updates.
+	forall percept(indicators(List)), bel(indicator(ID,OldCurrent,OldTarget), member(indicator(ID,NewCurrent,NewTarget),List)) 
+		do delete(indicator(ID,OldCurrent,OldTarget)) + insert(indicator(ID,NewCurrent,NewTarget)).
+		
+	%If somehow new zones appear in the list, add them to our belief base.
+	forall percept(indicators(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List), not(zone(ID,_,_,_,_))) 
+		do insert(zone(ID,Name,Floors,Size,CategoriesList)).
+		
+	%Every cycle deletes old values of the zones and inserts the new one if there are any updates.
+	forall percept(zones(List)), bel(zone(ID,OldName,OldFloors,OldSize,OldCategoriesList), 
+		member(zone(ID,NewName,NewFloors,NewSize,NewCategoriesList),List)) 
+		do delete(zone(ID,OldName,OldFloors,OldSize,OldCategoriesList)) 
+		+ insert(zone(ID,NewName,NewFloors,NewSize,NewCategoriesList)).
 	
-	% The list of functions, which allow you to build certain buildings
+	%If new buildings appear in the list, add them to our belief base.
+	forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List), 
+		not(building(ID,_,_,_,_,_))) do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors)).
+		
+	%Every cycle deletes old values of the buildings and insert the new one if there are any updates
+	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors), 
+		member(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFloors),List)) 
+		do delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors)) + 
+		insert(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFloors)).
+		
+	%Every cycle checks if a building is no longer there. If so, it deletes the building belief from the belief base
+	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors),
+		not(member(building(ID,_,_,_,_,_),List))) do 
+		delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors)).
+	
+	
+		
+	
+	%%% Percept rules by Wouter Pasman
+	% Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
-	
-	if percept(buildings(X)), bel(buildings(Y)) then delete(buildings(Y)) + insert(buildings(X)).
-	if percept(stakeholders(X)), bel(stakeholders(Y)) then delete(stakeholders(Y)) + insert( stakeholders(X)).
+	% Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
 }
