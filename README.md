@@ -13,7 +13,7 @@ Haoming Yeh | [hmyeh](https://github.com/hmyeh/)
 
 ## Build
 ##### Connector/Environment
-[![Build Status](https://travis-ci.org/levilime/tygron.svg?branch=master)](https://travis-ci.org/levilime/tygron)
+[![Build Status](https://travis-ci.org/eishub/tygron.svg?branch=context)](https://travis-ci.org/eishub/tygron)
 ##### Agent
 [![Build Status](https://travis-ci.org/levilime/ContextProject-Danshal.svg?branch=master)](https://travis-ci.org/levilime/ContextProject-Danshal)
 
