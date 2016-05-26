@@ -1,29 +1,41 @@
 use dummy as beliefs.
 
+%%% Init module is only ran once
 module tygronInit {
-		%%% Is execute when the agent starts%%%
 		
-		%%% Inserts for each stakeholder their basic information.
+		%%% STAKEHOLDER PERCEPT
+		%%% Stakeholder information doens't update during the session.
+
 		forall percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(ShID,Name,StartBudget,Income), SubList)) do insert(stakeholder(ShID,Name,StartBudget,Income)).
 		
-		%%% Inserts for each stakeholder their basic indicator information.
+		%%% INDICATORLINK PERCEPT
+		%%% Stakeholder information doens't update during the session.
+		
 		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(ShID,IndWeights), SubList)) 
 			do insert(indicatorLink(ShID,IndWeights)).
 		
-		%%% For each indicator in the game, insert its start value and target.
+		%%% INDICATOR PERCEPT
+		%%% Indicators should be initialized to be used by the rule in the event module.
+		
 		forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List))
 			do insert(indicator(ID,Current,Target)).
 		
-		%%% For each zones in the game, insert its basic information.
+		%%% ZONE PERCEPT
+		%%% For the same reason as indicator. It should be initialized before going to the event module rules.
+		
 		forall percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
 			do insert(zone(ID,Name,Floors,Size,CategoriesList)).
 		
-		%%% For each new building, insert its basic information.
+		%%% BUILDING PERCEPT 
+		%%% Fallback insert rule, so we're sure they get inserted before going to the event module.
 		forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List))
 			do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors)).
 		
-		
+		%%% LAND PERCEPT
+		%%% Fallback insert rule, so we're sure they get inserted before going to the event module.
+		forall percept(lands(List)), bel(member(land(ID, OwnerID, MultiPolygon), List))
+			do insert(land(ID,OwnerID,MultiPolygon)).
 		
 		%%% Code from Wouter%%%
 		% Inserts an initial belief so the send on change rules work which are mentioned in the event module.
