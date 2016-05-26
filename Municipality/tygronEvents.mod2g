@@ -2,23 +2,25 @@ use dummy as knowledge.
 
 module tygronEvents {
 	
-	%If somehow new indicators appear in the list, add them to our belief base.
-	forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List), not(indicator(ID,_,_))) 
-		do insert(indicator(ID,Current,Target)).
+	%%% INDICATOR PERCEPT
+	%%% Indicator should not be able to be added or deleted during a session. But their current value can changed
+	%%% during session.
 		
 	%Every cycle deletes old values of the indicator and inserts the new one if there are any updates.
 	forall percept(indicators(List)), bel(indicator(ID,OldCurrent,OldTarget), member(indicator(ID,NewCurrent,NewTarget),List)) 
 		do delete(indicator(ID,OldCurrent,OldTarget)) + insert(indicator(ID,NewCurrent,NewTarget)).
-		
-	%If somehow new zones appear in the list, add them to our belief base.
-	forall percept(indicators(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List), not(zone(ID,_,_,_,_))) 
-		do insert(zone(ID,Name,Floors,Size,CategoriesList)).
-		
+	
+	%%% ZONE PERCEPT
+	%%% Zones should not be able to be added or deleted during a session. But they should be able to be changed.
+	
 	%Every cycle deletes old values of the zones and inserts the new one if there are any updates.
 	forall percept(zones(List)), bel(zone(ID,OldName,OldFloors,OldSize,OldCategoriesList), 
 		member(zone(ID,NewName,NewFloors,NewSize,NewCategoriesList),List)) 
 		do delete(zone(ID,OldName,OldFloors,OldSize,OldCategoriesList)) 
 		+ insert(zone(ID,NewName,NewFloors,NewSize,NewCategoriesList)).
+	
+	%%% BUILDING PERCEPT
+	%%% Buildings can be removed (destroyed), added (simply built) and changed (upgrades).
 	
 	%If new buildings appear in the list, add them to our belief base.
 	forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List), 
@@ -35,7 +37,23 @@ module tygronEvents {
 		not(member(building(ID,_,_,_,_,_),List))) do 
 		delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors)).
 	
+	%%% LAND PERCEPT
+	%%%	Lands can be added (one stakeholder could only buy one part of a patch of land of another stakeholder,
+	%%% creating 2 new patches which should have different ID's). Lands can be changed (change of owner for example).
+	%%% Lands should also be able to get deleted (2 patches of land with different ID's next to eachother could be merged
+	%%% to one land with 1 ID with a bigger multipolygon).
 	
+	%If new lands appear in the list, add them to our belief base.
+	forall percept(lands(List)), bel(member(land(ID,OwnerID,MultiPolygon),List))
+		do insert(land(ID,OwnerID,MultiPolygon)).
+		
+	%Every cycle deletes old values of the lands and inserts new information about the lands if there are any updates.
+	forall percept(lands(List)), bel(land(ID,OldOwnerID,OldMultiPolygon), member(land(ID,NewOwnerID,NewMultiPolygon), List))
+		do delete(land(ID,OldOwnerID,OldMultiPolygon)) + insert(land(ID,NewOwnerID,NewMultiPolygon)).
+	
+	%Every cycle checks if a piece of land is no longer there)
+	forall percept(lands(List)), bel(land(ID,OwnerID,OldMultiPolygon), not(member(land(ID,_,_),List)))
+		do delete(land(ID,OwnerID,OldMultiPolygon)).
 		
 	
 	%%% Percept rules by Wouter Pasman

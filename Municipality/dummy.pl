@@ -6,7 +6,8 @@
 	indicatorLink/2,
 	stakeholder/4,
 	zone/5,
-	building/6.
+	building/6,
+	land/3.
 
 % we have a building if the building list has at least 1 element.
 havebuilding :- buildings([X|Y]).
