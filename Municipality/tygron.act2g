@@ -6,3 +6,6 @@ use dummy as knowledge.
 define	building_plan_construction(Id, Level, MultiPolygon) with
    pre{ true }
    post{ true }
+define map_sell_land(Self, Buyer, MultiPolygon, Price) with
+	pre{ true}
+	post{ true}
