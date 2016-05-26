@@ -1,6 +1,4 @@
 use dummy as knowledge.
-use tygron as actionspec.
-use somegoal as goals.
 
 order = linearall.
 module green {

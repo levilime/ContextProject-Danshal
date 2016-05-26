@@ -1,16 +1,16 @@
 %Definition for beliefs
-:- dynamic stakeholders/1.
-:- dynamic settings/1.
-:- dynamic functions/1.
-:- dynamic buildings/1.
-:- dynamic self/1.
-:- dynamic indicator/3.
-:- dynamic indicatorLink/2.
-:- dynamic zone_link/4.
-:- dynamic greenId/1.
-:- dynamic stakeholder/4.
-:- dynamic zone/5.
-:- dynamic building/6.
+:- dynamic stakeholders/1,
+	settings/1,
+	functions/1,
+	buildings/1,
+	self/1,
+	indicator/3,
+	indicatorLink/2,
+	zone_link/4,
+	greenId/1,
+	stakeholder/4,
+	zone/5,
+	building/6.
 
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.
