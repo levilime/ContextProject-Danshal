@@ -6,7 +6,7 @@
 	stakeholder/4,
 	zone/5,
 	building/6,
-	yolo/0,
-	havebuiltsomething/0.
+	havebuiltsomething/0,
+	land/3.
 
 % we have a building if the building list has at least 1 element.

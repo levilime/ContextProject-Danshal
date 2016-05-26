@@ -4,7 +4,7 @@ use somegoal as goals.
 
 exit=nogoals.
 
-module helloWorld {
+module tygron {
 	%%% Apply decision rules, choose an action (linear by default)%%%
 	
 	% If there is a function to build a road

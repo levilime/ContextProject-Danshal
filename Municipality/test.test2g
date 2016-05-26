@@ -1,9 +1,11 @@
 use Tygron as mas.
 use dummy as knowledge.
 use tygron as module.
+use somegoal as goals.
+
 timeout = 300.
 
-test helloWorld with
+test tygronagent with
 	pre{true}
 	in{ 
 		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
@@ -31,5 +33,5 @@ test helloWorld with
 	post{true}
 	
 	tygronagent {
-		do helloWorld.
+		do tygron.
 	}
