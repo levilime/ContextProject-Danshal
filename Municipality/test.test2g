@@ -5,7 +5,7 @@ use somegoal as goals.
 
 timeout = 300.
 
-test tygronagent with
+test tygron with
 	pre{true}
 	in{ 
 		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
@@ -32,6 +32,6 @@ test tygronagent with
 	}
 	post{true}
 	
-	tygronagent {
+	tygron {
 		do tygron.
 	}
