@@ -69,8 +69,8 @@ module tygronEvents {
 		do delete(request(ID,OldAnswerList)) + insert(request(ID,NewAnswerList)).
 	
 	%If requests are answered and therefore are no longer in the list, delete the request belief.
-	forall percept(requests(List)), bel(request(ID,AnswerList), not(member(request(ID,_),List))
-		do delete(request(ID,AnswerList))
+	forall percept(requests(List)), bel(request(ID,AnswerList), not(member(request(ID,_),List)))
+		do delete(request(ID,AnswerList)).
 		
 	
 	%%% Percept rules by Wouter Pasman
