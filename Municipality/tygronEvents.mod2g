@@ -44,7 +44,7 @@ module tygronEvents {
 	%%% to one land with 1 ID with a bigger multipolygon).
 	
 	%If new lands appear in the list, add them to our belief base.
-	forall percept(lands(List)), bel(member(land(ID,OwnerID,MultiPolygon),List))
+	forall percept(lands(List)), bel(member(land(ID,OwnerID,MultiPolygon),List), not(land(ID,_,_)))
 		do insert(land(ID,OwnerID,MultiPolygon)).
 		
 	%Every cycle deletes old values of the lands and inserts new information about the lands if there are any updates.
@@ -54,6 +54,23 @@ module tygronEvents {
 	%Every cycle checks if a piece of land is no longer there)
 	forall percept(lands(List)), bel(land(ID,OwnerID,OldMultiPolygon), not(member(land(ID,_,_),List)))
 		do delete(land(ID,OwnerID,OldMultiPolygon)).
+		
+	%%% Request PERCEPT
+	%%% New requests can be added and already answered requests can be removed from the percept list.
+	%%% We're not sure whether percepts can also be changed, so we're also adding that rule just to be sure.
+	%%% NOT SURE WHETHER THIS IS CORRECT, SINCE THIS IS VERSION 1.0.9
+	
+	%If new requests appear in the list, add them to our belief base.
+	forall percept(requests(List)), bel(member(request(ID,AnswerList),List), not(request(ID,_)))
+			do insert(request(ID,AnswerList)).
+	
+	%If percepts somehow get updated, delete the old belief and insert an updated one.
+	forall percept(requests(List)), bel(request(ID,OldAnswerList), member(request(ID,NewAnswerList), List))
+		do delete(request(ID,OldAnswerList)) + insert(request(ID,NewAnswerList)).
+	
+	%If requests are answered and therefore are no longer in the list, delete the request belief.
+	forall percept(requests(List)), bel(request(ID,AnswerList), not(member(request(ID,_),List))
+		do delete(request(ID,AnswerList))
 		
 	
 	%%% Percept rules by Wouter Pasman

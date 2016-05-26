@@ -28,14 +28,20 @@ module tygronInit {
 			do insert(zone(ID,Name,Floors,Size,CategoriesList)).
 		
 		%%% BUILDING PERCEPT 
-		%%% Fallback insert rule, so we're sure they get inserted before going to the event module.
+		%%% Fallback insert rule, so we're sure they get inserted in the first cycle.
 		forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List))
 			do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors)).
 		
 		%%% LAND PERCEPT
-		%%% Fallback insert rule, so we're sure they get inserted before going to the event module.
+		%%% Fallback insert rule, so we're sure they get inserted in the first cycle.
 		forall percept(lands(List)), bel(member(land(ID, OwnerID, MultiPolygon), List))
 			do insert(land(ID,OwnerID,MultiPolygon)).
+			
+		%%% REQUEST PERCEPT
+		%%% Fallback insert rule, so we're sure they get inserted in the first cycle.
+		%%  CAN BE WRONG RULE, NOT ABLE TO TEST YET.
+		forall percept(requests(List)), bel(member(request(IDType,AnswerList),List))
+			do insert(request(IDType,AnswerList)).
 		
 		%%% Code from Wouter%%%
 		% Inserts an initial belief so the send on change rules work which are mentioned in the event module.
