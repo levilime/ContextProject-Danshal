@@ -13,4 +13,6 @@
 :- dynamic building/6.
 
 % We have a building if the building list has at least 1 element.
-havebuilding :- buildings([X|Y]).
+havebuilding :- true.
+
+buildPark :- building(Id,_,OwnerID,_,Categories,_), member('PARK',Categories).
