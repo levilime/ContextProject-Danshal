@@ -23,6 +23,9 @@ module tygronInit {
 		forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List))
 			do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors)).
 		
+		%%% For each new land, insert its basic information.
+		forall percept(lands(List)), bel(member(land(ID,OwnerID, MultiPolygon),List))
+			do insert(land(ID,OwnerID,MultiPolygon)).
 		
 		
 		%%% Code from Wouter%%%

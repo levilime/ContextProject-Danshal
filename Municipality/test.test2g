@@ -1,13 +1,35 @@
 use Tygron as mas.
-use tygron as knowledge.
+use dummy as knowledge.
 use tygron as module.
-timeout = 5.
+timeout = 300.
 
-test tygron with
-	pre{not(buildings(_))}
-	in{ }
-	post{buildings(_)}
+test helloWorld with
+	pre{true}
+	in{ 
+		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
+		%These tests have been made according to the templates in the GOAL Programming guide.
+		percept(indicators(List)),bel(member(indicator(ID,Current,Target),List)) 
+			leadsto bel(indicator(ID,Current,Target)).
+		percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
+			leadsto bel(zone(ID,Name,Floors,Size,CategoriesList)).
+		percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List)) 
+			leadsto bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
+		percept(stakeholders(List)), bel(member(SubList, List), 
+			member(stakeholder(ShID,Name,StartBudget,Income), SubList)))) 
+			leadsto bel(stakeholder(ShID,Name,StartBudget,Income)).
+		percept(stakeholders(List)), bel(member(SubList, List), 
+			member(indicatorLink(ShID,IndWeights), SubList)))) 
+			leadsto bel(indicatorLink(ShID,IndWeights)).
+		
+		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
+		%These tests have been made according to the templates in the GOAL Programming guide.
+		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),
+			not(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List)))
+			leadsto not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
+		
+	}
+	post{true}
 	
-	tygron {
+	tygronagent {
 		do helloWorld.
 	}
