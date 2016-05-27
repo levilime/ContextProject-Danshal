@@ -1,4 +1,5 @@
 use dummy as knowledge.
+use green as module.
 
 module tygronEvents {
 	
@@ -78,4 +79,7 @@ module tygronEvents {
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
 	% Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
+	
+	% Account for the indicator concerning green.
+	if true then green.
 }
