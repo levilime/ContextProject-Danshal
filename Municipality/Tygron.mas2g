@@ -8,5 +8,5 @@ define tygronagent as agent {
 }
 
 launchpolicy {
-	when name=Municipality launch tygronagent.
+	when name=Gemeente launch tygronagent.
 }
