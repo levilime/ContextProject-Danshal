@@ -10,6 +10,8 @@
 	stakeholder/4,
 	zone/5,
 	building/6,
+	land/3,
+	request/2,
 	havebuiltsomething/0,
 	land/3.
 
@@ -17,4 +19,5 @@
 havebuilding :- true.
 
 buildPark :- building(Id,_,OwnerID,_,Categories,_), member('PARK',Categories).
+
 
