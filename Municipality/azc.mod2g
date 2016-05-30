@@ -1,7 +1,5 @@
 use dummy as knowledge.
 
-exit=nogoals.
-
 order = linearall.
 module azc{
 	%%% check if there is still need for an azc (id 650)
