@@ -25,7 +25,7 @@ test tygron with
 		
 		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncIDFloors),
+		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),
 			not(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
 			leadsto not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
 		
