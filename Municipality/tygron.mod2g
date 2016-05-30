@@ -7,9 +7,13 @@ exit=nogoals.
 module tygron {
 	%%% Apply decision rules, choose an action (linear by default)%%%
 	
-	% If there is a goal to have a park, build a park (currently not working).
+	% If there is a goal to have a park, build a park.
 	if goal(buildPark), bel(functions(FS), member(['stadspark',Id,L],FS)) 
 		then building_plan_construction(Id, 1, multipolygon('MULTIPOLYGON (((10 10, 10 20, 210 20, 210 10, 10 10)))')).
+	
+	% If there is a goal to have an AZC, build an AZC.
+	if goal(buildAZC), bel(functions(FS), member(['AZC',Id,L],FS)) 
+		then building_plan_construction(Id, 1, square(10,10,200,10)).
 	
 	% If there is a function to build a road
 	% Then use building_plan_construction to build it (always 1 floor)
