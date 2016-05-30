@@ -29,6 +29,9 @@ test tygron with
 			not(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
 			leadsto not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
 		
+		%Test azc module (azc has id 650)
+		percept(money(1)), bel not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors))
+			leadsto not(buildAZC).
 	}
 	post{true}
 	

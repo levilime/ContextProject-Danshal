@@ -5,11 +5,11 @@ exit=nogoals.
 order = linearall.
 module azc{
 	%%% check if there is still need for an azc (id 650)
-	if not(bel(building(Id,_,OwnerID,_,_,650,_))) then adopt(buildAZC).
+	if bel(building(Id,_,OwnerID,_,_,650,_)) then exit-module.
 	%%% check if we have budget for an azc
-	
+	if bel(money(X),X<100000) then exit-module.
 	%%% check if there is space for an azc
 
-	%if bel(functions(FS), member([Name,Id,L],FS), member('AZC',L))
-	%	then adopt build(Id, 3, square(10,10,200,10)).
+	%adopt if all preconditions are met
+	if true then adopt(buildAZC).
 }

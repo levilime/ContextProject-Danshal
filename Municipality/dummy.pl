@@ -19,5 +19,9 @@
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
+% money money money
+money(X) :- stakeholder(_,'Gemeente',X,_).
+
+% We want a building if we need it
 buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
 buildAZC :- building(Id,_,OwnerID,_,_,650,_).
