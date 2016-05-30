@@ -83,4 +83,5 @@ module tygronEvents {
 	
 	% Account for the indicator concerning green.
 	if true then green.
+	if true then azc.
 }
