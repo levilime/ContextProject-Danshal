@@ -9,6 +9,12 @@ module tygronInit {
 		forall percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(ShID,Name,StartBudget,Income), SubList)) do insert(stakeholder(ShID,Name,StartBudget,Income)).
 		
+		%%% FUNCTION PERCEPT
+		%%% There will not be a change in functions during a session.
+		
+		forall percept(functions(FList)), bel(member([Name,Id,L], FList))
+			do insert(function(Name,Id,L)).
+		
 		%%% INDICATORLINK PERCEPT
 		%%% Stakeholder information doens't update during the session.
 		
