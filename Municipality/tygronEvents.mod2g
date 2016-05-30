@@ -72,7 +72,29 @@ module tygronEvents {
 	%If requests are answered and therefore are no longer in the list, delete the request belief.
 	forall percept(requests(List)), bel(request(ID,AnswerList), not(member(request(ID,_),List)))
 		do delete(request(ID,AnswerList)).
-		
+	
+	%%% Action PERCEPT
+	%%% Action percept is the percept for the action_menu and gives the possible actions a stakeholder is able to perform.
+	
+	%If new actions appear in the list, add them to our belief base. The FunctionList cannot be the SpecialOptions list.
+	forall percept(actions(List)), bel(member(["action", ID, FunctionList, SpecialOptions], List), not(action(ID,_,_)), member(X, FunctionList), is_list(X))
+			do insert(action(ID,FunctionList, SpecialOptions)).
+	
+	%If new actions appear in the list, add them to our belief base. The FunctionList needs to be the SpecialOptions list.
+	forall percept(actions(List)), bel(member(["action", ID, FunctionList, SpecialOptions], List), not(action(ID,_,_)), member(X, FunctionList), not(is_list(X)))
+			do insert(action(ID,[], FunctionList)).
+	
+	%If percepts somehow get updated, delete the old belief and insert an updated one. The FunctionList cannot be the SpecialOptions list.
+	forall percept(actions(List)), bel(action(ID,OldFunctionList, OldSpecialOptions), member(["action", ID, NewFunctionList, NewSpecialOptions], List), member(X, NewFunctionList), is_list(X))
+		do delete(action(ID,OldFunctionList, OldSpecialOptions)) + insert(action(ID,NewFunctionList, NewSpecialOptions)).
+	
+	%If percepts somehow get updated, delete the old belief and insert an updated one. The FunctionList needs to be the SpecialOptions list.
+	forall percept(actions(List)), bel(action(ID,OldFunctionList, OldSpecialOptions), member(["action", ID, NewFunctionList, NewSpecialOptions], List), member(X, NewFunctionList), not(is_list(X)))
+		do delete(action(ID,OldFunctionList, OldSpecialOptions)) + insert(action(ID,[], NewFunctionList)).
+	
+	%If actions are not longer applicable and therefore are no longer in the list, delete the action belief.
+	forall percept(actions(List)), bel(action(ID,FunctionList, SpecialOptions), not(member(["action", ID, _, _], List)))
+		do delete(action(ID,FunctionList, SpecialOptions)).	
 	
 	%%% Percept rules by Wouter Pasman
 	% Deletes the old functions list and insert the new one if there is an update of the functions

@@ -13,7 +13,8 @@
 	land/3,
 	request/2,
 	havebuiltsomething/0,
-	land/3.
+	land/3,
+	action/3.
 
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.

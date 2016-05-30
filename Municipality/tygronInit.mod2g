@@ -43,6 +43,17 @@ module tygronInit {
 		forall percept(requests(List)), bel(member(request(IDType,AnswerList),List))
 			do insert(request(IDType,AnswerList)).
 		
+		%%% ACTION PERCEPT
+		%%% Action insert rule, since the action percepts already has actions in it during the first cycle.
+		%The FunctionList cannot  be the SpecialOptions list. 
+		forall percept(actions(List)), bel(member(["action", ID, FunctionList, SpecialOptions], List), member(X, FunctionList), is_list(X))
+			do insert(action(ID, FunctionList, SpecialOptions)).
+		
+		%%% Action insert rule, since the action percepts already has actions in it during the first cycle.
+		%The FunctionList needs to be the SpecialOptions list. 
+		forall percept(actions(List)), bel(member(["action", ID, FunctionList, SpecialOptions], List), member(X, FunctionList), not(is_list(X)))
+			do insert(action(ID, [], FunctionList)).
+		
 		%%% Code from Wouter%%%
 		% Inserts an initial belief so the send on change rules work which are mentioned in the event module.
 		if true then insert(settings([])).
