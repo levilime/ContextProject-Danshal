@@ -14,8 +14,8 @@ test tygron with
 			leadsto bel(indicator(ID,Current,Target)).
 		percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
 			leadsto bel(zone(ID,Name,Floors,Size,CategoriesList)).
-		percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List)) 
-			leadsto bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
+		percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
+			leadsto bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
 		percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(ShID,Name,StartBudget,Income), SubList)))) 
 			leadsto bel(stakeholder(ShID,Name,StartBudget,Income)).
@@ -25,8 +25,8 @@ test tygron with
 		
 		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),
-			not(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List)))
+		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncIDFloors),
+			not(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
 			leadsto not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
 		
 	}

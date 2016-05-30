@@ -1,5 +1,6 @@
 use dummy as knowledge.
 use green as module.
+use azc as module.
 
 module tygronEvents {
 	

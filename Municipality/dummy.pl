@@ -9,7 +9,7 @@
 	greenId/1,
 	stakeholder/4,
 	zone/5,
-	building/6,
+	building/7,
 	land/3,
 	request/2,
 	havebuiltsomething/0,
@@ -19,6 +19,5 @@
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
-buildPark :- building(Id,_,OwnerID,_,Categories,_), member('PARK',Categories).
-
-
+buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+buildAZC :- building(Id,_,OwnerID,_,_,650,_).
