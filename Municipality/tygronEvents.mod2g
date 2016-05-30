@@ -24,19 +24,19 @@ module tygronEvents {
 	%%% Buildings can be removed (destroyed), added (simply built) and changed (upgrades).
 	
 	%If new buildings appear in the list, add them to our belief base.
-	forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors),List), 
-		not(building(ID,_,_,_,_,_))) do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors)).
+	forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List), 
+		not(building(ID,_,_,_,_,_,_))) do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
 		
 	%Every cycle deletes old values of the buildings and insert the new one if there are any updates
-	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors), 
-		member(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFloors),List)) 
-		do delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors)) + 
-		insert(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFloors)).
+	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors), 
+		member(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFuncID,NewFloors),List)) 
+		do delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors)) + 
+		insert(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFuncID,NewFloors)).
 		
 	%Every cycle checks if a building is no longer there. If so, it deletes the building belief from the belief base
-	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors),
-		not(member(building(ID,_,_,_,_,_),List))) do 
-		delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFloors)).
+	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors),
+		not(member(building(ID,_,_,_,_,_,_),List))) do 
+		delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors)).
 	
 	%%% LAND PERCEPT
 	%%%	Lands can be added (one stakeholder could only buy one part of a patch of land of another stakeholder,

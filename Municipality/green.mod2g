@@ -10,7 +10,7 @@ module green {
 	
 	% If there is no park, we want to build a park.
 	%Later we can check for an increase in the indicator or even indicator per zone.
-	if not(bel(building(Id,_,OwnerID,_,Categories,_), member('PARK',Categories))) then adopt(buildPark).
+	if not(bel(building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories))) then adopt(buildPark).
 	
 	%forall bel(greenId(IndId), zone_link(ZoneId, IndId, Current, Target), Progress is Current/Target) do adopt(buildPark(ZoneId, Progress)).
 }
