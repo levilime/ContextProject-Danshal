@@ -4,10 +4,9 @@ exit=nogoals.
 
 order = linearall.
 module azc{
-	%%% check if there is still need for an azc
+	%%% check if there is still need for an azc (id 650)
 	if not(bel(building(Id,_,OwnerID,_,_,650,_))) then adopt(buildAZC).
 	%%% check if we have budget for an azc
-	%minstens 15M
 	
 	%%% check if there is space for an azc
 
