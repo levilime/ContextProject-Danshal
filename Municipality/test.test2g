@@ -24,9 +24,8 @@ test tygron with
 			leadsto bel(indicatorLink(ShID,IndWeights)).
 		percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
 			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
-		
-		%forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
-		%do insert(actionlog(StakeholderID,Description,ActionID,IncList)).
+		percept(functions(FList)), bel(member([Name,Id,L], FList))
+			leadsto bel(function(Name,Id,L)).
 		
 		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
