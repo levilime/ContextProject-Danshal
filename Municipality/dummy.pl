@@ -14,7 +14,8 @@
 	request/2,
 	havebuiltsomething/0,
 	land/3,
-	function/3.
+	function/3,
+	actionlog/4.
 
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.

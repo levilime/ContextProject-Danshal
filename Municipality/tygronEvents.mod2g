@@ -11,6 +11,17 @@ module tygronEvents {
 	forall percept(indicators(List)), bel(indicator(ID,OldCurrent,OldTarget), member(indicator(ID,NewCurrent,NewTarget),List)) 
 		do delete(indicator(ID,OldCurrent,OldTarget)) + insert(indicator(ID,NewCurrent,NewTarget)).
 	
+	%%% ACTIONLOG PERCEPT
+	%%% Get information about the change in indicators of performed actions.
+	
+	%%% Delete the old one for each stakeholder
+	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,_,_,_),ActList), actionlog(StakeholderID,A,B,C))
+		do delete(actionlog(StakeholderID,A,B,C)).
+	
+	%%% Add the new one for each stakeholde.
+	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
+		do insert(actionlog(StakeholderID,Description,ActionID,IncList)).
+	
 	%%% ZONE PERCEPT
 	%%% Zones should not be able to be added or deleted during a session. But they should be able to be changed.
 	
