@@ -15,8 +15,8 @@ module tygronEvents {
 	%%% Get information about the change in indicators of performed actions.
 	
 	%%% Delete the old one for each stakeholder
-	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,_,_,_),ActList), actionlog(StakeholderID,A,B,C))
-		do delete(actionlog(StakeholderID,A,B,C)).
+	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,_,_,_),ActList), actionlog(StakeholderID,OldDescription,OldActionID,OldIncList))
+		do delete(actionlog(StakeholderID,OldDescription,OldActionID,OldIncList)).
 	
 	%%% Add the new one for each stakeholde.
 	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
