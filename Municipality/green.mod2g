@@ -5,12 +5,13 @@ module green {
 	%Build green and parks to satisfy green indicator
 	
 	%Get the ID of the correct indicator and store it in the belief base.
-	if bel(stakeholder(ShId,'Gemeente',_,_),indicatorLink(ShId,LinkIndicator),member(indicatorWeights(IndID,'Gemeente Groen', IndWeight),LinkIndicator))
-		then insert(greenId(IndID)).
+	if bel(stakeholder(StakeholderID,'Gemeente',_,_),indicatorLink(StakeholderID,LinkIndicator),
+		member(indicatorWeights(IndicatorID,'Gemeente Groen', IndicatorWeight),LinkIndicator))
+		then insert(greenId(IndicatorID)).
 	
 	%If there is no park, we want to build a park.
 	%Later we can check for an increase in the indicator or even indicator per zone.
-	if not(bel(building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories))) then adopt(buildPark).
+	if not(bel(building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories))) then adopt(buildPark).
 	
 	%forall bel(greenId(IndId), zone_link(ZoneId, IndId, Current, Target), Progress is Current/Target) do adopt(buildPark(ZoneId, Progress)).
 }
