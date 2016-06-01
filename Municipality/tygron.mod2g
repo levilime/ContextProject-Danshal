@@ -4,8 +4,10 @@ use somegoal as goals.
 
 exit=nogoals.
 
+%Main module, here is specified which actions should be taken dependant on which goals.
+%Order of the module is standard linear.
 module tygron {
-	%%% Apply decision rules, choose an action (linear by default)%%%
+
 	
 	% If there is a goal to have a park, build a park.
 	if goal(buildPark), bel(functions(FS), member(['stadspark',Id,L],FS)) 
