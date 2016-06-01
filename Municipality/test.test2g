@@ -42,7 +42,7 @@ test tygron with
 			leadsto not(bel(actionlog(StakeholderID,Description,ActionID,IncList))).
 			
 		%There are some beliefs that should never be deleted. These tests make sure that never happens.
-		never(not(bel(my_stakeholder_id(_))))).
+		always(bel(my_stakeholder_id(_))).
 
 	}
 	post{true}		
