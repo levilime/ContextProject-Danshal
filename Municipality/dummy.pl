@@ -15,7 +15,8 @@
 	havebuiltsomething/0,
 	land/3,
 	function/3,
-	actionlog/4.
+	actionlog/4,
+	my_stakeholder_id/1.
 
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.
