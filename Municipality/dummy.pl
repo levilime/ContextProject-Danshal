@@ -23,6 +23,8 @@ havebuilding :- true.
 %Money money money
 money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 
-%We want a building if we need it
-buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
-buildAZC :- building(Id,_,OwnerID,_,_,650,_).
+% We want a building if we need it
+buildPark :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+% Azc's function ID is 650
+buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
+
