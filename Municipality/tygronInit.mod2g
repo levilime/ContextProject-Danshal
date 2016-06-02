@@ -9,8 +9,6 @@ module tygronInit {
 		
 		%%% STAKEHOLDER PERCEPT
 		%%% Stakeholder information doens't update during the session.
-		
-		if percept(my_stakeholder_id(StakeholderID)) then insert(my_stakeholder_id(StakeholderID)).
 
 		forall percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(ShID,Name,StartBudget,Income), SubList)) do insert(stakeholder(ShID,Name,StartBudget,Income)).
