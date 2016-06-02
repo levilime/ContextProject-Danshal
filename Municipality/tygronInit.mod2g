@@ -1,51 +1,52 @@
 use dummy as beliefs.
 
-%%% Init module is only ran once
+% The init module is ran only once at the startup of the agent.
+% Order of the module is standard linearall
 module tygronInit {
 		
-		%%% STAKEHOLDER PERCEPT
-		%%% Stakeholder information doens't update during the session.
+		%STAKEHOLDER PERCEPT
+		%Stakeholder information doens't update during the session.
 
 		forall percept(stakeholders(List)), bel(member(SubList, List), 
-			member(stakeholder(ShID,Name,StartBudget,Income), SubList)) do insert(stakeholder(ShID,Name,StartBudget,Income)).
+			member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList)) do insert(stakeholder(StakeholderID,Name,StartBudget,Income)).
 		
-		%%% FUNCTION PERCEPT
-		%%% There will not be a change in functions during a session.
+		%FUNCTION PERCEPT
+		%There will not be a change in functions during a session.
 		
-		forall percept(functions(FList)), bel(member([Name,Id,L], FList))
-			do insert(function(Name,Id,L)).
+		forall percept(functions(FunctionList)), bel(member([FunctionName,FunctionID,List], FunctionList))
+			do insert(function(FunctionName,FunctionID,List)).
 		
-		%%% INDICATORLINK PERCEPT
-		%%% Stakeholder information doens't update during the session.
+		%INDICATORLINK PERCEPT
+		%Stakeholder information doens't update during the session.
 		
-		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(ShID,IndWeights), SubList)) 
-			do insert(indicatorLink(ShID,IndWeights)).
+		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(StakeholderID,IndWeights), SubList)) 
+			do insert(indicatorLink(StakeholderID,IndWeights)).
 		
-		%%% INDICATOR PERCEPT
-		%%% Indicators should be initialized to be used by the rule in the event module.
+		%INDICATOR PERCEPT
+		%Indicators should be initialized to be used by the rule in the event module.
 		
-		forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List))
-			do insert(indicator(ID,Current,Target)).
+		forall percept(indicators(List)), bel(member(indicator(IndicatorID,Current,Target),List))
+			do insert(indicator(IndicatorID,Current,Target)).
 		
-		%%% ZONE PERCEPT
-		%%% For the same reason as indicator. It should be initialized before going to the event module rules.
+		%ZONE PERCEPT
+		%For the same reason as indicator. It should be initialized before going to the event module rules.
 		
-		forall percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
-			do insert(zone(ID,Name,Floors,Size,CategoriesList)).
+		forall percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriesList),List)) 
+			do insert(zone(ZoneID,Name,Floors,Size,CategoriesList)).
 		
-		%%% BUILDING PERCEPT 
-		%%% Fallback insert rule, so we're sure they get inserted in the first cycle.
-		forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
-			do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+		%BUILDING PERCEPT 
+		%Fallback insert rule, so we're sure they get inserted in the first cycle.
+		forall percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			do insert(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
 		
-		%%% LAND PERCEPT
-		%%% Fallback insert rule, so we're sure they get inserted in the first cycle.
-		forall percept(lands(List)), bel(member(land(ID, OwnerID, MultiPolygon), List))
-			do insert(land(ID,OwnerID,MultiPolygon)).
+		%LAND PERCEPT
+		%Fallback insert rule, so we're sure they get inserted in the first cycle.
+		forall percept(lands(List)), bel(member(land(LandID, OwnerID, MultiPolygon), List))
+			do insert(land(LandID,OwnerID,MultiPolygon)).
 			
-		%%% REQUEST PERCEPT
-		%%% Fallback insert rule, so we're sure they get inserted in the first cycle.
-		%%  CAN BE WRONG RULE, NOT ABLE TO TEST YET.
+		%REQUEST PERCEPT
+		%Fallback insert rule, so we're sure they get inserted in the first cycle.
+		%CAN BE WRONG RULE, NOT ABLE TO TEST YET.
 		forall percept(requests(List)), bel(member(request(IDType,AnswerList),List))
 			do insert(request(IDType,AnswerList)).
 		
@@ -60,8 +61,8 @@ module tygronInit {
 		forall percept(actions(List)), bel(member(["action", ID, FunctionList, SpecialOptions], List), member(X, FunctionList), not(is_list(X)))
 			do insert(action(ID, [], FunctionList)).
 		
-		%%% Code from Wouter%%%
-		% Inserts an initial belief so the send on change rules work which are mentioned in the event module.
+		%Code from Wouter
+		%Inserts an initial belief so the send on change rules work which are mentioned in the event module.
 		if true then insert(settings([])).
 		if true then insert(functions([])).
 		
