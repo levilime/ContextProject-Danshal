@@ -57,16 +57,16 @@ module tygronEvents {
 	%%% to one land with 1 ID with a bigger multipolygon).
 	
 	%If new lands appear in the list, add them to our belief base.
-	forall percept(lands(List)), bel(member(land(ID,OwnerID,MultiPolygon),List), not(land(ID,_,_)))
-		do insert(land(ID,OwnerID,MultiPolygon)).
+	forall percept(lands(List)), bel(member(land(ID,OwnerID,MultiPolygon,Zones),List), not(land(ID,_,_,_)))
+		do insert(land(ID,OwnerID,MultiPolygon,Zones)).
 		
 	%Every cycle deletes old values of the lands and inserts new information about the lands if there are any updates.
-	forall percept(lands(List)), bel(land(ID,OldOwnerID,OldMultiPolygon), member(land(ID,NewOwnerID,NewMultiPolygon), List))
-		do delete(land(ID,OldOwnerID,OldMultiPolygon)) + insert(land(ID,NewOwnerID,NewMultiPolygon)).
+	forall percept(lands(List)), bel(land(ID,OldOwnerID,OldMultiPolygon,OldZones), member(land(ID,NewOwnerID,NewMultiPolygon,NewZones), List))
+		do delete(land(ID,OldOwnerID,OldMultiPolygon,OldZones)) + insert(land(ID,NewOwnerID,NewMultiPolygon,NewZones)).
 	
 	%Every cycle checks if a piece of land is no longer there)
-	forall percept(lands(List)), bel(land(ID,OwnerID,OldMultiPolygon), not(member(land(ID,_,_),List)))
-		do delete(land(ID,OwnerID,OldMultiPolygon)).
+	forall percept(lands(List)), bel(land(ID,OwnerID,OldMultiPolygon,OldZones), not(member(land(ID,_,_,_),List)))
+		do delete(land(ID,OwnerID,OldMultiPolygon,OldZones)).
 		
 	%%% Request PERCEPT
 	%%% New requests can be added and already answered requests can be removed from the percept list.
