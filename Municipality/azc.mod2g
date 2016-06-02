@@ -7,7 +7,10 @@ module azc{
 	%%% check if we have budget for an azc
 	if bel(money(X),X<100000) then exit-module.
 	%%% check if there is space for an azc
-
-	%adopt if all preconditions are met
-	if true then adopt(buildAZC).
+	%select a zone that allows this type of building
+	if bel(
+		land(LandID,StakeholderID,MultiPoly,Zones),
+		member(Zone,Zones),
+		zone(Zone,_,_,Categories,_),
+		member('SOCIAL',Categories)) then adopt(buildAZC(Zone)).
 }

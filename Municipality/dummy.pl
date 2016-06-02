@@ -25,4 +25,5 @@ money(X) :- stakeholder(_,'Gemeente',X,_).
 
 % We want a building if we need it
 buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
-buildAZC :- building(Id,_,OwnerID,_,_,650,_).
+% It's not yet possible to check if a building is in a zone
+buildAZC(Zone) :- building(Id,_,OwnerID,_,_,650,_).
