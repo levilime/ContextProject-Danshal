@@ -85,8 +85,8 @@ module tygronEvents {
 	forall percept(requests(List)), bel(request(ID,AnswerList), not(member(request(ID,_),List)))
 		do delete(request(ID,AnswerList)).
 	
-	%%% Action PERCEPT
-	%%% Action percept is the percept for the action_menu and gives the possible actions a stakeholder is able to perform.
+	%Action PERCEPT
+	%Action percept is the percept for the action_menu and gives the possible actions a stakeholder is able to perform.
 	
 	%If new actions appear in the list, add them to our belief base. The FunctionList cannot be the SpecialOptions list.
 	forall percept(actions(List)), bel(member(["action", ID, FunctionList, SpecialOptions], List), not(action(ID,_,_)), member(X, FunctionList), is_list(X))
