@@ -3,7 +3,7 @@
 	settings/1,
 	functions/1,
 	self/1,
-	indicator/3,
+	indicator/4,
 	indicatorLink/2,
 	zone_link/4,
 	greenId/1,
@@ -18,12 +18,14 @@
 	actionlog/4,
 	my_stakeholder_id/1.
 
-% We have a building if the building list has at least 1 element.
+%We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
-% money money money
-money(X) :- stakeholder(_,'Gemeente',X,_).
+%Money money money
+money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 
 % We want a building if we need it
-buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
-buildAZC :- building(Id,_,OwnerID,_,_,650,_).
+buildPark :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+% Azc's function ID is 650
+buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
+
