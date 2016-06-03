@@ -8,20 +8,24 @@ timeout = 300.
 test tygron with
 	pre{true}
 	in{ 
+		
+		%If a percept is perceived, insert it.
+		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
+		
 		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(indicators(List)),bel(member(indicator(ID,Current,Target),List)) 
-			leadsto bel(indicator(ID,Current,Target)).
-		percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
-			leadsto bel(zone(ID,Name,Floors,Size,CategoriesList)).
-		percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
-			leadsto bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
+		percept(indicators(List)),bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)) 
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriesList),List)) 
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
 		percept(stakeholders(List)), bel(member(SubList, List), 
-			member(stakeholder(ShID,Name,StartBudget,Income), SubList)))) 
-			leadsto bel(stakeholder(ShID,Name,StartBudget,Income)).
+			member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList)))) 
+			leadsto bel(stakeholder(StakeholderID,Name,StartBudget,Income)).
 		percept(stakeholders(List)), bel(member(SubList, List), 
-			member(indicatorLink(ShID,IndWeights), SubList)))) 
-			leadsto bel(indicatorLink(ShID,IndWeights)).
+			member(indicatorLink(StakeholderID,IndWeights), SubList)))) 
+			leadsto bel(indicatorLink(StakeholderID,IndWeights)).
 		percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
 			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
 		percept(functions(FuncList)), bel(member([FuncName,FuncID,CategoriesList], FuncList))
@@ -30,12 +34,15 @@ test tygron with
 		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
 		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),
-			not(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
-			leadsto not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
+			not(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
+			leadsto not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
 				
 		percept(action_logs(ActList)), bel(actionlog(StakeholderID,Description,ActionID,IncList),
 			not(member(actionlog(StakeholderID,Description,ActionID,IncList), ActList)))
 			leadsto not(bel(actionlog(StakeholderID,Description,ActionID,IncList))).
+			
+		%There are some beliefs that should never be deleted. These tests make sure that never happens.
+		always(bel(my_stakeholder_id(_))).
 
 	}
 	post{true}		
@@ -44,11 +51,11 @@ test azc with
 	pre{true}
 	in{ 
 		%Test azc module (azc has id 650)
-		percept(money(1)), not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
+		percept(money(1)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
 			leadsto not(goal(buildAZC)).%to little money
-		percept(money(999999)), not(bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
+		percept(money(999999)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
 			leadsto goal(buildAZC).%enough money
-		percept(money(999999)), building(ID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)
+		percept(money(999999)), building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)
 			leadsto not(goal(buildAZC)).%should fail, no need	
 	}
 	post{true}	

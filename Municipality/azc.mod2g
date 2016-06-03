@@ -2,6 +2,7 @@ use dummy as knowledge.
 
 order = linearall.
 module azc{
+<<<<<<< HEAD
 	% check if there is still need for an azc (id 650)
 	if bel(building(Id,_,OwnerID,_,_,650,_)) then exit-module.
 	% check if we have budget for an azc
@@ -14,4 +15,14 @@ module azc{
 		member(Zone,Zones),
 		zone(Zone,_,_,Categories,_),
 		member('SOCIAL',Categories)) then adopt(buildAZC(LandID)).
+=======
+	%Check if there is still need for an azc (id 650)
+	if bel(building(BuildingID,_,OwnerID,_,_,650,_)) then exit-module.
+	%Check if we have budget for an azc
+	if bel(money(MoneyAmount),MoneyAmount<100000) then exit-module.
+	%Check if there is space for an azc
+
+	%Adopt if all preconditions are met
+	if true then adopt(buildAZC).
+>>>>>>> refs/remotes/origin/mystakeholderid
 }
