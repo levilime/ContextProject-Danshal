@@ -9,8 +9,10 @@ module tygronEvents {
 	%during session.
 		
 	%Every cycle deletes old values of the indicator and inserts the new one if there are any updates.
-	forall percept(indicators(List)), bel(indicator(IndicatorID,OldCurrent,OldTarget), member(indicator(IndicatorID,NewCurrent,NewTarget),List)) 
-		do delete(indicator(IndicatorID,OldCurrent,OldTarget)) + insert(indicator(IndicatorID,NewCurrent,NewTarget)).
+	forall percept(indicators(List)), bel(indicator(IndicatorID,OldCurrent,OldTarget,OldZoneIndicatorsList), 
+		member(indicator(IndicatorID,NewCurrent,NewTarget,NewZoneIndicatorsList),List)) 
+		do delete(indicator(IndicatorID,OldCurrent,OldTarget,OldZoneIndicatorsList)) 
+		+ insert(indicator(IndicatorID,NewCurrent,NewTarget,NewZoneIndicatorsList)).
 	
 	%ACTIONLOG PERCEPT
 	%Get information about the change in indicators of performed actions.

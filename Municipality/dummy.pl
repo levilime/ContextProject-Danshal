@@ -3,7 +3,7 @@
 	settings/1,
 	functions/1,
 	self/1,
-	indicator/3,
+	indicator/4,
 	indicatorLink/2,
 	zone_link/4,
 	greenId/1,
