@@ -10,6 +10,7 @@ test tygron with
 	in{ 
 		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
+<<<<<<< HEAD
 		percept(indicators(List)),bel(member(indicator(ID,Current,Target),List)) 
 			leadsto bel(indicator(ID,Current,Target)).
 		percept(zones(List)), bel(member(zone(ID,Name,Floors,Size,CategoriesList),List)) 
@@ -18,6 +19,14 @@ test tygron with
 			leadsto bel(land(LandID,OwnerID,Multi,Zones)).
 		percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
 			leadsto bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
+=======
+		percept(indicators(List)),bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)) 
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriesList),List)) 
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
+>>>>>>> refs/heads/master
 		percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList)))) 
 			leadsto bel(stakeholder(StakeholderID,Name,StartBudget,Income)).

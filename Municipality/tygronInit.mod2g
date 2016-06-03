@@ -24,8 +24,8 @@ module tygronInit {
 		%%% INDICATOR PERCEPT
 		%%% Indicators should be initialized to be used by the rule in the event module.
 		
-		forall percept(indicators(List)), bel(member(indicator(ID,Current,Target),List))
-			do insert(indicator(ID,Current,Target)).
+		forall percept(indicators(List)), bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List))
+			do insert(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
 		
 		%%% ZONE PERCEPT
 		%%% For the same reason as indicator. It should be initialized before going to the event module rules.
