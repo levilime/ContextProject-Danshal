@@ -15,8 +15,9 @@
 	havebuiltsomething/0,
 	land/3,
 	function/3,
-	actionlog/4.
-
+	actionlog/4,
+	%additional belief for data
+	data/1.
 % We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
@@ -26,4 +27,4 @@ money(X) :- stakeholder(_,'Gemeente',X,_).
 % We want a building if we need it
 buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
 % It's not yet possible to check if a building is in a zone
-buildAZC(Zone) :- building(Id,_,OwnerID,_,_,650,_).
+buildAZC(Land) :- building(Id,_,OwnerID,_,_,650,_), data(Land).
