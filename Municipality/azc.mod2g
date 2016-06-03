@@ -10,7 +10,7 @@ module azc{
 	%select a zone that allows this type of building
 	if bel(
 		land(LandID,StakeholderID,MultiPoly,Zones),
-		
+		my_stakeholder_id(StakeholderID),
 		member(Zone,Zones),
 		zone(Zone,_,_,Categories,_),
 		member('SOCIAL',Categories)) then adopt(buildAZC(LandID)).
