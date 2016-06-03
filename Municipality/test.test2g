@@ -10,8 +10,8 @@ test tygron with
 	in{ 
 		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(indicators(List)),bel(member(indicator(IndicatorID,Current,Target),List)) 
-			leadsto bel(indicator(IndicatorID,Current,Target)).
+		percept(indicators(List)),bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)) 
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
 		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriesList),List)) 
 			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
 		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
