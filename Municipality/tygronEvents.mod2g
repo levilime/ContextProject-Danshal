@@ -93,7 +93,9 @@ module tygronEvents {
 	%Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
 	
-	%Account for the indicator concerning green.
-	if true then green.
-	if true then azc.
+	%If we don't have enough green yet so our target is made, go to the module handling that.
+	if bel(not(specificIndicatorCompleted('Gemeente Groen'))) then green.
+	
+	%If we don't have built a big enough AZC yet, go to the module handling that.
+	if bel(not(specificIndicatorCompleted('AZC'))) then azc.
 }
