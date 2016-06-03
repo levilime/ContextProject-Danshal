@@ -17,6 +17,27 @@
 	function/3,
 	actionlog/4.
 
+%getMyID/1 - myID(<StakeholderID)
+%<StakeholderID> - Numeral ID for the stakeholder the agent is representing. Output variable.
+getMyID(StakeholderID):- stakeholder(ID,'Gemeente',_,_).
+
+%getMyIndicatorList/1 - getMyIndicatorList(IndicatorList)
+%<IndicatorList> - A list of indicatorWeights representing all our indicators. Output variable.
+getMyIndicatorList(IndicatorList) :- getMyID(StakeholderID), indicatorLink(StakeholderID, WeightsList).
+
+%getMyIndicatorID/1 - getMyIndicatorID(<IndicatorID>)
+%<IndicatorID> - Numeral ID representing one of the indicators the agent has. - Output variable.
+getRandomIndicatorID(IndicatorID) :- getMyIndicatorList(IndicatorList), 
+					member(indicatorWeights(IndicatorID,_,_),IndicatorList).
+
+%getSpecificIndicatorID/2 - getSpecificIndicatorID(<IndicatorName>,<IndicatorID>)
+%<IndicatorName> - Name of the indicator in the IndicatorWeights percept - Input variable.
+%<IndicatorID> - Numeral ID representing that specific indicator. - Output variable.
+getSpecificIndicatorID(IndicatorName,IndicatorID) :- getMyIndicatorList(IndicatorList),
+						member(indicatorWeights(IndicatorID,IndicatorName,_),IndicatorList).
+						
+indicatorCompleted(IndicatorID) :- true.
+
 %We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
