@@ -4,21 +4,23 @@ use somegoal as goals.
 
 exit=nogoals.
 
+%Main module, here is specified which actions should be taken dependant on which goals.
+%Order of the module is standard linear.
 module tygron {
-	%%% Apply decision rules, choose an action (linear by default)%%%
+
 	
 	% If there is a goal to have a park, build a park.
-	if goal(buildPark), bel(functions(FS), member(['stadspark',Id,L],FS)) 
-		then building_plan_construction(Id, 1, multipolygon('MULTIPOLYGON (((10 10, 10 20, 210 20, 210 10, 10 10)))')).
+	if goal(buildPark), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 
+		then building_plan_construction(FunctionID, 1, multipolygon('MULTIPOLYGON (((10 10, 10 20, 210 20, 210 10, 10 10)))')).
 	
 	% If there is a goal to have an AZC, build an AZC.
-	if goal(buildAZC), bel(functions(FS), member(['azc',Id,L],FS)) 
-		then building_plan_construction(Id, 1, multipolygon('MULTIPOLYGON (((10 20, 10 30, 210 30, 210 20, 10 20)))')).
+	if goal(buildAZC), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList)) 
+		then building_plan_construction(FunctionID, 1, multipolygon('MULTIPOLYGON (((10 20, 10 30, 210 30, 210 20, 10 20)))')).
 	
 	% If there is a function to build a road
 	% Then use building_plan_construction to build it (always 1 floor)
-	if bel(functions(FS), member([Name,Id,L],FS), member('ROAD',L)) 
-		then building_plan_construction(Id, 1, multipolygon('MULTIPOLYGON (((10 30, 10 40, 210 40, 210 30, 10 30)))')).
+	if bel(functions(FunctionList), member([_,FunctionID,List],FunctionList), member('ROAD',List)) 
+		then building_plan_construction(FunctionID, 1, multipolygon('MULTIPOLYGON (((10 30, 10 40, 210 40, 210 30, 10 30)))')).
 
 
 }
