@@ -4,9 +4,9 @@ use azc as module.
 
 module tygronEvents {
 	
-	%INDICATOR PERCEPT
-	%Indicator should not be able to be added or deleted during a session. But their current value can change
-	%during session.
+	%%% INDICATOR PERCEPT
+	%%% Indicator should not be able to be added or deleted during a session. But their current value can changed
+	%%% during session.
 		
 	%Every cycle deletes old values of the indicator and inserts the new one if there are any updates.
 	forall percept(indicators(List)), bel(indicator(IndicatorID,OldCurrent,OldTarget,OldZoneIndicatorsList), 
@@ -14,49 +14,49 @@ module tygronEvents {
 		do delete(indicator(IndicatorID,OldCurrent,OldTarget,OldZoneIndicatorsList)) 
 		+ insert(indicator(IndicatorID,NewCurrent,NewTarget,NewZoneIndicatorsList)).
 	
-	%ACTIONLOG PERCEPT
-	%Get information about the change in indicators of performed actions.
+	%%% ACTIONLOG PERCEPT
+	%%% Get information about the change in indicators of performed actions.
 	
-	%Delete the old one for each stakeholder
+	%%% Delete the old one for each stakeholder
 	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,_,_,_),ActList), actionlog(StakeholderID,OldDescription,OldActionID,OldIncList))
 		do delete(actionlog(StakeholderID,OldDescription,OldActionID,OldIncList)).
 	
-	%Add the new one for each stakeholde.
+	%%% Add the new one for each stakeholde.
 	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
 		do insert(actionlog(StakeholderID,Description,ActionID,IncList)).
 	
-	%ZONE PERCEPT
-	%Zones should not be able to be added or deleted during a session. But they should be able to be changed.
+	%%% ZONE PERCEPT
+	%%% Zones should not be able to be added or deleted during a session. But they should be able to be changed.
 	
 	%Every cycle deletes old values of the zones and inserts the new one if there are any updates.
-	forall percept(zones(List)), bel(zone(ZoneID,OldName,OldFloors,OldSize,OldCategoriesList), 
-		member(zone(ZoneID,NewName,NewFloors,NewSize,NewCategoriesList),List)) 
-		do delete(zone(ZoneID,OldName,OldFloors,OldSize,OldCategoriesList)) 
-		+ insert(zone(ZoneID,NewName,NewFloors,NewSize,NewCategoriesList)).
+	forall percept(zones(List)), bel(zone(ID,OldName,OldFloors,OldSize,OldCategoriesList), 
+		member(zone(ID,NewName,NewFloors,NewSize,NewCategoriesList),List)) 
+		do delete(zone(ID,OldName,OldFloors,OldSize,OldCategoriesList)) 
+		+ insert(zone(ID,NewName,NewFloors,NewSize,NewCategoriesList)).
 	
-	%BUILDING PERCEPT
-	%Buildings can be removed (destroyed), added (simply built) and changed (upgrades).
+	%%% BUILDING PERCEPT
+	%%% Buildings can be removed (destroyed), added (simply built) and changed (upgrades).
 	
 	%If new buildings appear in the list, add them to our belief base.
-	forall percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List), 
-		not(building(BuildingID,_,_,_,_,_,_))) do insert(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+	forall percept(buildings(List)), bel(member(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List), 
+		not(building(ID,_,_,_,_,_,_))) do insert(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
 		
 	%Every cycle deletes old values of the buildings and insert the new one if there are any updates
-	forall percept(buildings(List)), bel(building(BuildingID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors), 
-		member(building(BuildingID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFuncID,NewFloors),List)) 
-		do delete(building(BuildingID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors)) + 
-		insert(building(BuildingID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFuncID,NewFloors)).
+	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors), 
+		member(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFuncID,NewFloors),List)) 
+		do delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors)) + 
+		insert(building(ID, NewName,NewOwnerID,NewConstructionYear,NewCategoriesList,NewFuncID,NewFloors)).
 		
 	%Every cycle checks if a building is no longer there. If so, it deletes the building belief from the belief base
-	forall percept(buildings(List)), bel(building(BuildingID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors),
-		not(member(building(BuildingID,_,_,_,_,_,_),List))) do 
-		delete(building(BuildingID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors)).
+	forall percept(buildings(List)), bel(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors),
+		not(member(building(ID,_,_,_,_,_,_),List))) do 
+		delete(building(ID,OldName,OldOwnerID,OldConstructionYear,OldCategoriesList,OldFuncID,OldFloors)).
 	
-	%LAND PERCEPT
-	%Lands can be added (one stakeholder could only buy one part of a patch of land of another stakeholder,
-	%creating 2 new patches which should have different ID's). Lands can be changed (change of owner for example).
-	%Lands should also be able to get deleted (2 patches of land with different ID's next to eachother could be merged
-	%to one land with 1 ID with a bigger multipolygon).
+	%%% LAND PERCEPT
+	%%%	Lands can be added (one stakeholder could only buy one part of a patch of land of another stakeholder,
+	%%% creating 2 new patches which should have different ID's). Lands can be changed (change of owner for example).
+	%%% Lands should also be able to get deleted (2 patches of land with different ID's next to eachother could be merged
+	%%% to one land with 1 ID with a bigger multipolygon).
 	
 	%If new lands appear in the list, add them to our belief base.
 	forall percept(lands(List)), bel(member(land(LandID,OwnerID,MultiPolygon),List), not(land(LandID,_,_)))
@@ -70,9 +70,10 @@ module tygronEvents {
 	forall percept(lands(List)), bel(land(LandID,OwnerID,OldMultiPolygon), not(member(land(LandID,_,_),List)))
 		do delete(land(LandID,OwnerID,OldMultiPolygon)).
 		
-	%Request PERCEPT
-	%New requests can be added and already answered requests can be removed from the percept list.
-	%We're not sure whether percepts can also be changed, so we're also adding that rule just to be sure.
+	%%% Request PERCEPT
+	%%% New requests can be added and already answered requests can be removed from the percept list.
+	%%% We're not sure whether percepts can also be changed, so we're also adding that rule just to be sure.
+	%%% NOT SURE WHETHER THIS IS CORRECT, SINCE THIS IS VERSION 1.0.9
 	
 	%If new requests appear in the list, add them to our belief base.
 	forall percept(requests(List)), bel(member(request(ID,AnswerList),List), not(request(ID,_)))
@@ -87,13 +88,13 @@ module tygronEvents {
 		do delete(request(ID,AnswerList)).
 		
 	
-	%Percept rules by Wouter Pasman
-	%Deletes the old functions list and insert the new one if there is an update of the functions
+	%%% Percept rules by Wouter Pasman
+	% Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
-	%Deletes the old settings list and insert the new one if there is an update of the settings
+	% Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
 	
-	%Account for the indicator concerning green.
+	% Account for the indicator concerning green.
 	if true then green.
 	if true then azc.
 }

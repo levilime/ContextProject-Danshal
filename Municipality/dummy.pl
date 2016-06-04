@@ -10,7 +10,7 @@
 	stakeholder/4,
 	zone/5,
 	building/7,
-	land/3,
+	land/4,
 	request/2,
 	havebuiltsomething/0,
 	land/3,
