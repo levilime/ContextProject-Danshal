@@ -7,13 +7,13 @@
 	indicatorLink/2,
 	zone_link/4,
 	greenId/1,
+	attemptedPark/1,
 	stakeholder/4,
 	zone/5,
 	building/7,
 	land/3,
 	request/2,
 	havebuiltsomething/0,
-	land/3,
 	function/3,
 	actionlog/4.
 
@@ -24,7 +24,9 @@ havebuilding :- true.
 money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 
 % We want a building if we need it
-buildPark :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+buildPark(ZoneID,MultiPolygon) :- attemptedPark(MultiPolygon).
+%buildPark(ZoneID,MultiPolygon) :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+
 % Azc's function ID is 650
 buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
 

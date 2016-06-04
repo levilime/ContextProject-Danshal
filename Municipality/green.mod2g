@@ -9,9 +9,17 @@ module green {
 		member(indicatorWeights(IndicatorID,'Gemeente Groen', IndicatorWeight),LinkIndicator))
 		then insert(greenId(IndicatorID)).
 	
-	%If there is no park, we want to build a park.
-	%Later we can check for an increase in the indicator or even indicator per zone.
-	if not(bel(building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories))) then adopt(buildPark).
+	%If the green indicator in a Zone is below 0.9 find a suitable location to build said park and adopt the goal
+	%of building in that location. The goal is satisfied when we see an increase in indicator, indicating something has been build.
+	%Do not adopt a new goal for building in a zone you already have a goal for.
+	forall bel(greenId(GreenIndicatorID), indicator(GreenIndicatorID,_,_,ZoneLinkList),
+		member(zone_link(ZoneID,GreenIndicatorID,Current,Target),ZoneLinkList), 0.90 > (Current / Target),
+		land(LandID,OwnerID,MultiPolygon,ZoneID,Size), Size > 50, Size < 200), not(goal(buildPark(ZoneID,_))),
+		not(bel(attemptedPark(MultiPolygon))) do adopt(buildPark(ZoneID, MultiPolygon)).
+	
+	
+	
+	%if not(bel(building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories))) then adopt(buildPark).
 	
 	%forall bel(greenId(IndId), zone_link(ZoneId, IndId, Current, Target), Progress is Current/Target) do adopt(buildPark(ZoneId, Progress)).
 }
