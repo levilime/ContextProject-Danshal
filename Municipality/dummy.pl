@@ -10,13 +10,14 @@
 	stakeholder/4,
 	zone/5,
 	building/7,
-	land/3,
+	land/4,
 	request/2,
 	havebuiltsomething/0,
 	land/3,
 	function/3,
-	actionlog/4.
-
+	actionlog/4,
+	data/1,
+	my_stakeholder_id/1.
 %We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
@@ -24,7 +25,6 @@ havebuilding :- true.
 money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 
 % We want a building if we need it
-buildPark :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
-% Azc's function ID is 650
-buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
-
+buildPark :- building(Id,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+% It's not yet possible to check if a building is in a zone
+buildAZC(Land) :- building(Id,_,OwnerID,_,_,650,_), data(Land).

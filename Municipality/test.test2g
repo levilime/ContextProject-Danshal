@@ -8,6 +8,10 @@ timeout = 300.
 test tygron with
 	pre{true}
 	in{ 
+		
+		%If a percept is perceived, insert it.
+		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
+		
 		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
 		percept(indicators(List)),bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)) 
@@ -36,6 +40,9 @@ test tygron with
 		percept(action_logs(ActList)), bel(actionlog(StakeholderID,Description,ActionID,IncList),
 			not(member(actionlog(StakeholderID,Description,ActionID,IncList), ActList)))
 			leadsto not(bel(actionlog(StakeholderID,Description,ActionID,IncList))).
+			
+		%There are some beliefs that should never be deleted. These tests make sure that never happens.
+		always(bel(my_stakeholder_id(_))).
 
 	}
 	post{true}		
