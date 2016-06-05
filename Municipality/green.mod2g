@@ -7,15 +7,16 @@ module green {
 	%Get the ID of the correct indicator and store it in the belief base.
 	if bel(stakeholder(StakeholderID,'Gemeente',_,_),indicatorLink(StakeholderID,LinkIndicator),
 		member(indicatorWeights(IndicatorID,'Gemeente Groen', IndicatorWeight),LinkIndicator))
-		then insert(greenId(IndicatorID)).
+		then insert(greenId(IndicatorID,StakeholderID)).
 	
 	%If the green indicator in a Zone is below 0.9 find a suitable location to build said park and adopt the goal
 	%of building in that location. The goal is satisfied when we see an increase in indicator, indicating something has been build.
 	%Do not adopt a new goal for building in a zone you already have a goal for.
-	forall bel(greenId(GreenIndicatorID), indicator(GreenIndicatorID,_,_,ZoneLinkList),
-		member(zone_link(ZoneID,GreenIndicatorID,Current,Target),ZoneLinkList), 0.90 > (Current / Target),
-		land(LandID,OwnerID,MultiPolygon,ZoneID,Size), Size > 50, Size < 200), not(goal(buildPark(ZoneID,_))),
-		not(bel(attemptedPark(MultiPolygon))) do adopt(buildPark(ZoneID, MultiPolygon)).
+	if bel(greenId(GreenIndicatorID,OurID),
+		indicator(GreenIndicatorID,_,_,ZoneLinkList), member(zone_link(ZoneID,GreenIndicatorID,Current,Target),ZoneLinkList),
+		0.90 > (Current / Target), land(_,OurID,MultiPolygon,ZoneID,Size), Size > 50, Size < 200),
+		not(goal(buildPark(ZoneID,_))), not(bel(attempttoBuild(MultiPolygon)))
+		then adopt(buildPark(ZoneID, MultiPolygon)).
 	
 	
 	
