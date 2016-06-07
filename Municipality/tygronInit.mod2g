@@ -25,8 +25,9 @@ module tygronInit {
 		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(StakeholderID,IndWeights), SubList)) 
 			do insert(indicatorLink(StakeholderID,IndWeights)).
 		
-		forall bel(indicatorLink(StakeholderID, IndWeights), my_stakeholder_id(StakeholderID), member((IndicatorID, IndicatorWeight), IndWeights))
-			do insert(my_indicator(IndicatorID, IndicatorWeight)).
+		%My_Indicator belief to store the indicatorIDs and indicatorWeights of the stakeholder itself.
+		forall bel(indicatorLink(StakeholderID, IndWeights), my_stakeholder_id(StakeholderID), member(indicatorWeights(IndicatorID, IndicatorName,IndicatorWeight), IndWeights))
+			do insert(my_indicator(IndicatorID, IndicatorWeight)) + print(IndWeights).
 		
 		%INDICATOR PERCEPT
 		%Indicators should be initialized to be used by the rule in the event module.

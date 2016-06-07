@@ -9,7 +9,7 @@ exit=nogoals.
 %Order of the module is standard linear.
 module tygron {
 
-
+	% If there is a goal to answer a request, answer the request.
 	if goal(answered_request(RequestID, AnswerID)) , bel(open_request(RequestType, RequestID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList))then popup_answer(RequestID, AnswerID)
 		 + delete(open_request(RequestType, RequestID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList)).
 	

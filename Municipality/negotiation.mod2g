@@ -3,27 +3,33 @@ use dummy as knowledge.
 order = linearall.
 
 module negotiation {
+	
+	%For all the open requests that have actionlogIDs and the actionlogs that have indicators that influence the own indicators.
+	%Setup to check the total score of combining the indicatorWeights and increases/decreases for an action.
 	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), 
 	actionlog(StakeholderID,Description,ActionID,IncList), member(ActionID, ActionlogIDs), member([IndicatorID, Increase], IncList),
 	my_indicator(IndicatorID, Weight),
 	Weighed_value is Increase * Weight)
-		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)) + print(my_indicator(RequestType, ActionID, "1 rule")).
+		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)).
 		
-	
+	%Sum all the weighed values for the same actionID together.
 	forall bel(sum_indicators(ActionID, Weighed_value), total_sum(ActionID, OldSum), NewSum is OldSum + Weighed_value) do
-		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum))  + print(my_indicator(ActionID, "2 rule")).
+		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum)).
 	
+	%For all open requests that have a total score higher or equal to 0, adopt the goal to accept it.
 	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
 	total_sum(ActionID, Sum), Sum >= 0) do
-		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "3 rule")).
+		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum)).
 		
-		
+	%For all open requests that have a total score lower than 0, adopt the goal to reject it.	
 	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
 	total_sum(ActionID, Sum), Sum < 0) do
-		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "4 rule")).
+		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum)).
 		
+	%For all open requests without actionlogIDs, adopt the goal to accept it.	
 	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, [], Price, Multipolygon, AnswerList)) do adopt(answered_request(ID, 0)).
 		
+	%For all open requests that have an actionlogID, but do not have the actionlog in its belief base, adopt the goal to acccept it.	
 	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs),
 	not(actionlog(_,_,ActionID,_))) 
 		do adopt(answered_request(ID, 0)).

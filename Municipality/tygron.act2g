@@ -7,7 +7,7 @@ define	building_plan_construction(FunctionID, Floors, MultiPolygon) with
    pre{ true }
    post{ havebuiltsomething }
    
-   
+% Answer a Request, provide the request ID and the ID of the answer.    
 define popup_answer(RequestID, AnswerID) with
 	pre{true}
 	post{(answered_request(RequestID, AnswerID))}

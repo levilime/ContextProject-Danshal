@@ -73,59 +73,18 @@ module tygronEvents {
 		do delete(land(LandID,OwnerID,OldMultiPolygon)).
 		
 	%Request PERCEPT
-	%New requests can be added and already answered requests can be removed from the percept list.
-	%We're not sure whether percepts can also be changed, so we're also adding that rule just to be sure.
-	
-	%If new requests appear in the list, add them to our belief base.
-	%forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, VisibleSHIDs, AnswerList, ActionlogIDs, Price, Multipolygon),List), my_stakeholder_id(My_ID),
-	%remove_from_list(VisisbleSHIDs, My_ID, [SenderID|_]))
-	%		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, AnswerList, ActionlogIDs, Price, Multipolygon)).
-	
-	
+	%Only put those requests in the belief base that we need to answer.
 	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList),List))
 		do insert(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList)).
 		
-	%forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), is_list(VisibleSHIDs), my_stakeholder_id(My_ID)) %, remove_from_list(VisibleSHIDs, My_ID, [SenderID|_]))
-	%	do delete(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList)). 
-		%+ insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AnswerList)).
-			
-	%if percept(requests(List)) then insert(requests(List)) + print(List).
-			
-
-		
-	
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
 	%Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
 	
-	%if true then negotiation.
-	
-	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), 
-	actionlog(StakeholderID,Description,ActionID,IncList), member(ActionID, ActionlogIDs), member([IndicatorID, Increase], IncList),
-	my_indicator(IndicatorID, Weight),
-	Weighed_value is Increase * Weight)
-		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)) + print(my_indicator(RequestType, ActionID, "1 rule")).
-		
-	
-	forall bel(sum_indicators(ActionID, Weighed_value), total_sum(ActionID, OldSum), NewSum is OldSum + Weighed_value) do
-		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum))  + print(my_indicator(ActionID, "2 rule")).
-	
-	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
-	total_sum(ActionID, Sum), Sum >= 0) do
-		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "3 rule")).
-		
-		
-	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
-	total_sum(ActionID, Sum), Sum < 0) do
-		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "4 rule")).
-		
-	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, [], Price, Multipolygon, AnswerList)) do adopt(answered_request(ID, 0)).
-		
-	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs),
-	not(actionlog(_,_,ActionID,_))) 
-		do adopt(answered_request(ID, 0)).
+	%Go into the negotiation module.
+	if true then negotiation.
 	
 	%Account for the indicator concerning green.
 	if true then green.
