@@ -1,6 +1,8 @@
 use dummy as knowledge.
+use kapafunctions as knowledge.
 use green as module.
 use azc as module.
+use negotiation as module.
 
 module tygronEvents {
 	
@@ -75,16 +77,21 @@ module tygronEvents {
 	%We're not sure whether percepts can also be changed, so we're also adding that rule just to be sure.
 	
 	%If new requests appear in the list, add them to our belief base.
-	forall percept(requests(List)), bel(member(request(ID,AnswerList),List), not(request(ID,_)))
-			do insert(request(ID,AnswerList)).
+	%forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, VisibleSHIDs, AnswerList, ActionlogIDs, Price, Multipolygon),List), my_stakeholder_id(My_ID),
+	%remove_from_list(VisisbleSHIDs, My_ID, [SenderID|_]))
+	%		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, AnswerList, ActionlogIDs, Price, Multipolygon)).
 	
-	%If percepts somehow get updated, delete the old belief and insert an updated one.
-	forall percept(requests(List)), bel(request(ID,OldAnswerList), member(request(ID,NewAnswerList), List))
-		do delete(request(ID,OldAnswerList)) + insert(request(ID,NewAnswerList)).
 	
-	%If requests are answered and therefore are no longer in the list, delete the request belief.
-	forall percept(requests(List)), bel(request(ID,AnswerList), not(member(request(ID,_),List)))
-		do delete(request(ID,AnswerList)).
+	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList),List))
+		do insert(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList)).
+		
+	%forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), is_list(VisibleSHIDs), my_stakeholder_id(My_ID)) %, remove_from_list(VisibleSHIDs, My_ID, [SenderID|_]))
+	%	do delete(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList)). 
+		%+ insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AnswerList)).
+			
+	%if percept(requests(List)) then insert(requests(List)) + print(List).
+			
+
 		
 	
 	%Percept rules by Wouter Pasman
@@ -92,6 +99,33 @@ module tygronEvents {
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
 	%Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
+	
+	%if true then negotiation.
+	
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), 
+	actionlog(StakeholderID,Description,ActionID,IncList), member(ActionID, ActionlogIDs), member([IndicatorID, Increase], IncList),
+	my_indicator(IndicatorID, Weight),
+	Weighed_value is Increase * Weight)
+		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)) + print(my_indicator(RequestType, ActionID, "1 rule")).
+		
+	
+	forall bel(sum_indicators(ActionID, Weighed_value), total_sum(ActionID, OldSum), NewSum is OldSum + Weighed_value) do
+		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum))  + print(my_indicator(ActionID, "2 rule")).
+	
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
+	total_sum(ActionID, Sum), Sum >= 0) do
+		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "3 rule")).
+		
+		
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
+	total_sum(ActionID, Sum), Sum < 0) do
+		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "4 rule")).
+		
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, [], Price, Multipolygon, AnswerList)) do adopt(answered_request(ID, 0)).
+		
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs),
+	not(actionlog(_,_,ActionID,_))) 
+		do adopt(answered_request(ID, 0)).
 	
 	%Account for the indicator concerning green.
 	if true then green.

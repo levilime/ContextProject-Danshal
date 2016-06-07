@@ -1,9 +1,9 @@
 use dummy as beliefs.
-
+use dummy as knowledge.
+use kapafunctions as beliefs.
 %The init module is ran only once at the startup of the agent.
 %Order of the module is standard linearall
 module tygronInit {
-		
 		%MY_STAKEHOLDER_ID PERCEPT
 		%Agents don't switch from stakeholder, so this only needs to be inserted once and should never change
 		if percept(my_stakeholder_id(StakeholderID)) then insert(my_stakeholder_id(StakeholderID)).
@@ -24,6 +24,9 @@ module tygronInit {
 		
 		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(StakeholderID,IndWeights), SubList)) 
 			do insert(indicatorLink(StakeholderID,IndWeights)).
+		
+		forall bel(indicatorLink(StakeholderID, IndWeights), my_stakeholder_id(StakeholderID), member((IndicatorID, IndicatorWeight), IndWeights))
+			do insert(my_indicator(IndicatorID, IndicatorWeight)).
 		
 		%INDICATOR PERCEPT
 		%Indicators should be initialized to be used by the rule in the event module.
@@ -52,6 +55,8 @@ module tygronInit {
 		%CAN BE WRONG RULE, NOT ABLE TO TEST YET.
 		forall percept(requests(List)), bel(member(request(IDType,AnswerList),List))
 			do insert(request(IDType,AnswerList)).
+		
+		
 		
 		%Code from Wouter
 		%Inserts an initial belief so the send on change rules work which are mentioned in the event module.

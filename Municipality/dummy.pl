@@ -16,7 +16,13 @@
 	land/3,
 	function/3,
 	actionlog/4,
-	my_stakeholder_id/1.
+	my_stakeholder_id/1,
+	open_request/8,
+	requests/1,
+	answered_request/2,
+	my_indicator/2,
+	sum_indicators/2,
+	total_sum/2.
 
 %We have a building if the building list has at least 1 element.
 havebuilding :- true.

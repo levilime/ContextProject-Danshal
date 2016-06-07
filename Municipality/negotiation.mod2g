@@ -1,0 +1,30 @@
+use dummy as knowledge.
+
+order = linearall.
+
+module negotiation {
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), 
+	actionlog(StakeholderID,Description,ActionID,IncList), member(ActionID, ActionlogIDs), member([IndicatorID, Increase], IncList),
+	my_indicator(IndicatorID, Weight),
+	Weighed_value is Increase * Weight)
+		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)) + print(my_indicator(RequestType, ActionID, "1 rule")).
+		
+	
+	forall bel(sum_indicators(ActionID, Weighed_value), total_sum(ActionID, OldSum), NewSum is OldSum + Weighed_value) do
+		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum))  + print(my_indicator(ActionID, "2 rule")).
+	
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
+	total_sum(ActionID, Sum), Sum >= 0) do
+		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "3 rule")).
+		
+		
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs), 
+	total_sum(ActionID, Sum), Sum < 0) do
+		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum))  + print(my_indicator(RequestType, ActionID, Sum, "4 rule")).
+		
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, [], Price, Multipolygon, AnswerList)) do adopt(answered_request(ID, 0)).
+		
+	forall bel(open_request(RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList), member(ActionID, ActionlogIDs),
+	not(actionlog(_,_,ActionID,_))) 
+		do adopt(answered_request(ID, 0)).
+}
