@@ -1,38 +1,38 @@
 use dummy as knowledge.
 
-order = linear.
+order = random.
 module azc{
 
 	%Build a small single floor azc
 	if bel(
 		money(X), X>3600000,%have 3.6M money
-		land(LandID,StakeholderID,MultiPoly),%,Zones,Area find land
 		my_stakeholder_id(StakeholderID),%we need to own the land
+		land(LandID,Stakeholder,MultiPoly),%,Zones,Area find land
 		%Area>4000, Area<6000,%land should be small
-		member(Zone,Zones),%find zone
-		zone(Zone,_,_,Categories,_),%find zone category
+		%member(Zone,Zones)%find zone
+		zone(Zone,_,_,_,Categories),%find zone category
 		member('SOCIAL',Categories))%zone should support function
 		then adopt(buildAZC(LandID,1)).
 		
 	%Build a large single floor azc
 	if bel(
 		money(X),X>7100000,%have 7.1M money
-		land(LandID,StakeholderID,MultiPoly),%,Zones,Area find land
 		my_stakeholder_id(StakeholderID),%we need to own the land
+		land(LandID,Stakeholder,MultiPoly),%,Zones,Area find land
 		%Area>6000, Area<12000,%land should be large
-		member(Zone,Zones),%find zone
-		zone(Zone,_,_,Categories,_),%find zone category
+		%member(Zone,Zones)%find zone
+		zone(Zone,_,_,_,Categories),%find zone category
 		member('SOCIAL',Categories))%zone should support function
 		then adopt(buildAZC(LandID,1)).
 		
 	%Build a large multi floor azc
 	if bel(
 		money(X),X>8000000,%have 8M money
-		land(LandID,StakeholderID,MultiPoly),%,Zones,Area find land
 		my_stakeholder_id(StakeholderID),%we need to own the land
+		land(LandID,Stakeholder,MultiPoly),%,Zones,Area find land
 		%Area>3000, Area<6000,%land should be small
-		member(Zone,Zones),%find zone
-		zone(Zone,_,_,Categories,_),%find zone category
+		%member(Zone,Zones)%find zone
+		zone(Zone,_,_,_,Categories),%find zone category
 		member('SOCIAL',Categories))%zone should support function
 		then adopt(buildAZC(LandID,2)).
 }

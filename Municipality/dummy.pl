@@ -28,4 +28,3 @@ money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 buildPark :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
 % Azc's function ID is 650
 buildAZC(Land,Floors) :- building(BuildingID,_,OwnerID,_,_,650,Floors), land(Land,_,_).
-
