@@ -2,7 +2,7 @@ use dummy as knowledge.
 use tygron as actionspec.
 use somegoal as goals.
 
-exit=nogoals.
+exit=never.
 
 %Main module, here is specified which actions should be taken dependant on which goals.
 %Order of the module is standard linear.
