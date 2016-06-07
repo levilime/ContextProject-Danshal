@@ -1,13 +1,37 @@
 use dummy as knowledge.
 
-order = linearall.
+order = linear.
 module azc{
-	%Check if there is still need for an azc (id 650)
-	if bel(building(BuildingID,_,OwnerID,_,_,650,_)) then exit-module.
-	%Check if we have budget for an azc
-	if bel(money(MoneyAmount),MoneyAmount<100000) then exit-module.
-	%Check if there is space for an azc
 
-	%Adopt if all preconditions are met
-	if true then adopt(buildAZC).
+	%Build a small single floor azc
+	if bel(
+		money(X),X>10000,%have a lot of money
+		land(LandID,StakeholderID,MultiPoly),%,Zones,Area find land
+		my_stakeholder_id(StakeholderID),%we need to own the land
+		%Area>4000, Area<6000,%land should be small
+		member(Zone,Zones),%find zone
+		zone(Zone,_,_,Categories,_),%find zone category
+		member('SOCIAL',Categories)) then adopt(buildAZC(LandID,1)).
+		
+	%Build a large single floor azc
+	if bel(
+		money(X),X>10000,%have a lot of money
+		land(LandID,StakeholderID,MultiPoly),%,Zones,Area find land
+		my_stakeholder_id(StakeholderID),%we need to own the land
+		%Area>6000, Area<12000,%land should be large
+		member(Zone,Zones),%find zone
+		zone(Zone,_,_,Categories,_),%find zone category
+		member('SOCIAL',Categories))%zone should support function
+		then adopt(buildAZC(LandID,1)).
+		
+	%Build a large multi floor azc
+	if bel(
+		money(X),X>10000,%have a lot of money
+		land(LandID,StakeholderID,MultiPoly),%,Zones,Area find land
+		my_stakeholder_id(StakeholderID),%we need to own the land
+		%Area>3000, Area<6000,%land should be small
+		member(Zone,Zones),%find zone
+		zone(Zone,_,_,Categories,_),%find zone category
+		member('SOCIAL',Categories))%zone should support function
+		then adopt(buildAZC(LandID,2)).
 }
