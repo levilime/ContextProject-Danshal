@@ -18,8 +18,8 @@ test tygron with
 			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
 		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriesList),List)) 
 			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
-		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
-			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors,MultiPolygon),List)) 
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors,MultiPolygon))).
 		percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList)))) 
 			leadsto bel(stakeholder(StakeholderID,Name,StartBudget,Income)).
@@ -33,9 +33,9 @@ test tygron with
 		
 		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
 		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),
-			not(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
-			leadsto not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
+		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors,MultiPolygon),
+			not(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors,MultiPolygon),List)))
+			leadsto not(bel(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,Floors,MultiPolygon))).
 				
 		percept(action_logs(ActList)), bel(actionlog(StakeholderID,Description,ActionID,IncList),
 			not(member(actionlog(StakeholderID,Description,ActionID,IncList), ActList)))
@@ -51,11 +51,11 @@ test azc with
 	pre{true}
 	in{ 
 		%Test azc module (azc has id 650)
-		percept(money(1)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
+		percept(money(1)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors,MultiPolygon)))
 			leadsto not(goal(buildAZC)).%to little money
-		percept(money(999999)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
+		percept(money(999999)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors,MultiPolygon)))
 			leadsto goal(buildAZC).%enough money
-		percept(money(999999)), building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)
+		percept(money(999999)), building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors,MultiPolygon)
 			leadsto not(goal(buildAZC)).%should fail, no need	
 	}
 	post{true}	

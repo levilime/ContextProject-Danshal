@@ -39,8 +39,8 @@ module tygronInit {
 		
 		%BUILDING PERCEPT 
 		%Fallback insert rule, so we're sure they get inserted in the first cycle.
-		forall percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
-			do insert(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+		forall percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors,MultiPolygon),List))
+			do insert(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors,MultiPolygon)).
 		
 		%LAND PERCEPT
 		%Fallback insert rule, so we're sure they get inserted in the first cycle.
