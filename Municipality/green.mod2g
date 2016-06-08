@@ -16,7 +16,7 @@ module green {
 	%then adopt the goal of building a stadspark at that location.
 	if bel(greenId(GreenIndicatorID,OurID),
 		indicator(GreenIndicatorID,_,_,ZoneLinkList), member(zone_link(ZoneID,GreenIndicatorID,Current,Target),ZoneLinkList),
-		Target =\= 0, 0.95 > (Current / Target), land(_,stakeholder(OurID,_,_,_),MultiPolygon,ZoneIDList,Size), member(ZoneID,ZoneIDList),
+		Target =\= 0, 0.95 > (Current / Target), land(_,OurID,MultiPolygon,ZoneIDList,Size), member(ZoneID,ZoneIDList),
 		Size < 20000),
 		not(goal(buildPark(ZoneID,_))), not(bel(attempttoBuild(MultiPolygon)))
 		then adopt(buildPark(ZoneID, MultiPolygon)).
