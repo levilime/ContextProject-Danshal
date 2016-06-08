@@ -78,9 +78,6 @@ module tygronEvents {
 		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _, _), List))
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AnswerList)).
 		
-	%forall percept(requests(List)), bel(member(request(Type, RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList),List))
-	%	do print(request(Type, RequestType, ID, ContentLinkID, VisibleSHIDs, ActionlogIDs, Price, Multipolygon, AnswerList)).
-		
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
