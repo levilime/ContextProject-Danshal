@@ -1,12 +1,15 @@
 use dummy as beliefs.
 
-% The init module is ran only once at the startup of the agent.
-% Order of the module is standard linearall
+%The init module is ran only once at the startup of the agent.
+%Order of the module is standard linearall
 module tygronInit {
+		
+		%MY_STAKEHOLDER_ID PERCEPT
+		%Agents don't switch from stakeholder, so this only needs to be inserted once and should never change
+		if percept(my_stakeholder_id(StakeholderID)) then insert(my_stakeholder_id(StakeholderID)).
 		
 		%STAKEHOLDER PERCEPT
 		%Stakeholder information doens't update during the session.
-
 		forall percept(stakeholders(List)), bel(member(SubList, List), 
 			member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList)) do insert(stakeholder(StakeholderID,Name,StartBudget,Income)).
 		

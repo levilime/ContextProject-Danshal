@@ -10,6 +10,7 @@
 	indicator/4,
 	indicatorLink/2,
 	land/3,
+	my_stakeholder_id/1,
 	request/2,
 	self/1,
 	stakeholder/4,
