@@ -10,8 +10,8 @@ exit=nogoals.
 module tygron {
 
 	% If there is a goal to answer a request, answer the request.
-	if goal(answered_request(RequestID, AnswerID)) , bel(open_request(RequestType, RequestID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AnswerList))then popup_answer(RequestID, AnswerID)
-		 + delete(open_request(RequestType, RequestID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AnswerList)).
+	if goal(answered_request(RequestID, AnswerID)) , bel(open_request(RequestType, RequestID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList))then popup_answer(RequestID, AnswerID)
+		 + delete(open_request(RequestType, RequestID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 	
 	% If there is a goal to have a park, build a park.
 	if goal(buildPark), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 

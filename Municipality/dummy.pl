@@ -17,7 +17,7 @@
 	function/3,
 	actionlog/4,
 	my_stakeholder_id/1,
-	open_request/8,
+	open_request/9,
 	requests/1,
 	answered_request/2,
 	my_indicator/2,

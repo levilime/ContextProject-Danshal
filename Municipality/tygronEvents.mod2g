@@ -74,9 +74,14 @@ module tygronEvents {
 		
 	%Request PERCEPT
 	%Only put those requests in the belief base that we need to answer.
-	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AnswerList),List),
-		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _, _), List))
-		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AnswerList)).
+	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), not(AreaSize == "NO_SIZE"), not(Price == "NO_PRICE") , CalcPrice is Price / AreaSize)
+		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList)).
+		
+	%Only put those requests in the belief base that we need to answer.
+	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), (AreaSize == "NO_SIZE"; Price == "NO_PRICE"))
+		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions

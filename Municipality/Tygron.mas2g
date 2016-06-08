@@ -1,4 +1,4 @@
-use "contextvh-1.0.0-alpha-jar-with-dependencies.jar" as environment 
+use "contextvh-1.0.1-jar-with-dependencies.jar" as environment 
 	%with project = "testgg", stakeholders = ['Municipality'].
 	with project = "vhprojectdanshal", stakeholders = ['Gemeente'].
 
