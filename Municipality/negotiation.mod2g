@@ -17,6 +17,7 @@ module negotiation {
 		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum)).
 	
 	%For all open requests that have a total score higher or equal to 0, adopt the goal to accept it.
+	%For such a stakeholder that makes an improvement gains favor.
 	forall bel(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), member(ActionID, ActionlogIDs), 
 	total_sum(ActionID, Sum), Sum >= 0, feeling(SenderID, Favors), New_Favors is Favors + 1) do
 		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
@@ -26,7 +27,8 @@ module negotiation {
 	total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors =< 0) do
 		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum)).
 		
-	%For all open requests that have a total score lower than 0, adopt the goal to reject it.	
+	%For all open requests that have a total score lower than 0, adopt the goal to reject it.
+	%The stakeholder that gets this request accepted that lowers our indicators loses favor.
 	forall bel(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), member(ActionID, ActionlogIDs), 
 	total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 1) do
 		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
