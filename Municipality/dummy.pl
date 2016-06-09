@@ -1,10 +1,11 @@
 %Definition for beliefs
 :- dynamic
 	actionlog/4,
+	attempttoBuild/1,
 	building/7,
 	function/3,
 	functions/1,
-	greenId/1,
+	greenId/2,
 	havebuiltsomething/0,
 	indicator/4,
 	indicatorLink/2,
