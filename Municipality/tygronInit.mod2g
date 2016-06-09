@@ -1,6 +1,5 @@
 use dummy as beliefs.
 use dummy as knowledge.
-use kapafunctions as beliefs.
 %The init module is ran only once at the startup of the agent.
 %Order of the module is standard linearall
 module tygronInit {
