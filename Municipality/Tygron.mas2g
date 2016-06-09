@@ -1,5 +1,4 @@
 use "contextvh-1.0.1-jar-with-dependencies.jar" as environment 
-	%with project = "testgg", stakeholders = ['Municipality'].
 	with project = "vhprojectdanshal", stakeholders = ['Gemeente'].
 
 define tygronagent as agent {
@@ -9,6 +8,5 @@ define tygronagent as agent {
 }
 
 launchpolicy {
-	%when name=MUNICIPALITY launch tygronagent.
 	when name=GEMEENTE launch tygronagent.
 }

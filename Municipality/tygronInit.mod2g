@@ -48,8 +48,8 @@ module tygronInit {
 		
 		%LAND PERCEPT
 		%Fallback insert rule, so we're sure they get inserted in the first cycle.
-		forall percept(lands(List)), bel(member(land(LandID, OwnerID, MultiPolygon), List))
-			do insert(land(LandID,OwnerID,MultiPolygon)).
+		forall percept(lands(List)), bel(member(land(LandID, OwnerID, MultiPolygon,ZoneList,Size), List))
+			do insert(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
 			
 		%REQUEST PERCEPT
 		%Fallback insert rule, so we're sure they get inserted in the first cycle.
