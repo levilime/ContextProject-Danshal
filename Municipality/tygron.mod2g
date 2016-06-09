@@ -2,7 +2,7 @@ use dummy as knowledge.
 use tygron as actionspec.
 use somegoal as goals.
 
-exit=nogoals.
+exit=never.
 
 %Main module, here is specified which actions should be taken dependant on which goals.
 %Order of the module is standard linear.
@@ -10,8 +10,9 @@ module tygron {
 
 	
 	% If there is a goal to have a park, build a park.
-	if goal(buildPark), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 
-		then building_plan_construction(FunctionID, 1, multipolygon('MULTIPOLYGON (((10 10, 10 20, 210 20, 210 10, 10 10)))')).
+	% Add budget restriction rule, don't build a park when low on money!
+	if goal(buildPark(ZoneID,MultiPolygon)), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 
+		then building_plan_construction(FunctionID, 1, MultiPolygon).
 	
 	% If there is a goal to have an AZC, build an AZC.
 	if goal(buildAZC(Land,Floors)), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList), 

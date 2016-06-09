@@ -25,6 +25,8 @@ havebuilding :- true.
 money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 
 % We want a building if we need it
-buildPark :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
+%buildPark(ZoneID,MultiPolygon) :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
+
 % Azc's function ID is 650
 buildAZC(Land,Floors) :- building(BuildingID,_,OwnerID,_,_,650,Floors), land(Land,_,_,_,_).
