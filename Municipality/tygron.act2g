@@ -5,4 +5,4 @@ use dummy as knowledge.
 % Build a structure, provide the specific Id, numbers of levels, and dimensions.
 define	building_plan_construction(FunctionID, Floors, MultiPolygon) with
    pre{ true }
-   post{ havebuiltsomething }
+   post{ havebuiltsomething, attempttoBuild(MultiPolygon) }
