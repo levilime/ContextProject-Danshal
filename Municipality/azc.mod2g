@@ -8,7 +8,7 @@ module azc{
 
 	%Build a small multi floor azc
 	if bel(
-		money(X), X>3600000,%have 3.6M money
+		money(X), X>2500000,%have 2.5M money
 		my_stakeholder_id(StakeholderID),%we need to own the land
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),%find land
 		Area>1000, Area<4000,%land should be small
@@ -19,7 +19,7 @@ module azc{
 
 	%Build a small single floor azc
 	if bel(
-		money(X), X>3600000,%have 3.6M money
+		money(X), X>3500000,%have 3.5M money
 		my_stakeholder_id(StakeholderID),%we need to own the land
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),%find land
 		Area>3000, Area<6000,%land should be small
@@ -30,7 +30,7 @@ module azc{
 		
 	%Build a large single floor azc
 	if bel(
-		money(X),X>7100000,%have 7.1M money
+		money(X),X>5000000,%have 5M money
 		my_stakeholder_id(StakeholderID),%we need to own the land
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),%find land
 		Area>6000, Area<12000,%land should be large
@@ -41,7 +41,7 @@ module azc{
 		
 	%Build a large multi floor azc
 	if bel(
-		money(X),X>8000000,%have 8M money
+		money(X),X>7500000,%have 7.5M money
 		my_stakeholder_id(StakeholderID),%we need to own the land
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),%find land
 		Area>3000, Area<6000,%land should be small
