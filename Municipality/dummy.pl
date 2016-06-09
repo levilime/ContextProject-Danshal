@@ -14,6 +14,7 @@
 	request/2,
 	havebuiltsomething/0,
 	land/3,
+	action/3,
 	function/3,
 	actionlog/4,
 	my_stakeholder_id/1.
