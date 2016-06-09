@@ -1,4 +1,4 @@
-use "contextvh-1.0.0-alpha-jar-with-dependencies.jar" as environment 
+use "contextvh-1.0.1-alpha-jar-with-dependencies.jar" as environment 
 	with project = "vhprojectdanshal", stakeholders = ['Gemeente'].
 
 define tygronagent as agent {
