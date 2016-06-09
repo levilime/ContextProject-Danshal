@@ -3,6 +3,9 @@ use dummy as knowledge.
 order = random.
 module azc{
 
+	%if we already have a goal for building a specific azc we exit.
+	if goal(buildAZC(_,_)) then exit-module.
+
 	%Build a small multi floor azc
 	if bel(
 		money(X), X>3600000,%have 3.6M money
