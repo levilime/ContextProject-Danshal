@@ -1,5 +1,5 @@
-use "tygronenv-1.0.9-jar-with-dependencies.jar" as environment 
-	with project = "vhproject", stakeholders = ['Gemeente'], domain = "tudelft".
+use "contextvh-1.0.1-jar-with-dependencies.jar" as environment 
+	with project = "vhprojectdanshal", stakeholders = ['Gemeente'].
 
 define tygronagent as agent {
 	use tygron as main module.

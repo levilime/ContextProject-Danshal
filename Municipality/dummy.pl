@@ -15,7 +15,8 @@
 	havebuiltsomething/0,
 	land/3,
 	function/3,
-	actionlog/4.
+	actionlog/4,
+	my_stakeholder_id/1.
 
 %getMyID/1 - myID(<StakeholderID)
 %<StakeholderID> - Numeral ID for the stakeholder the agent is representing. Output variable.
