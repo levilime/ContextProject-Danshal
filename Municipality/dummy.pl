@@ -22,7 +22,7 @@
 %We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
-% Money money money
+% Get our current budget
 money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 		 member(indicatorWeights(IndicatorID,'Budget Gemeente',_),LinkIndicator),
 		 indicator(IndicatorID,Budget,_,_).
