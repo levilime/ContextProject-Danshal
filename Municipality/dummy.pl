@@ -23,7 +23,13 @@
 havebuilding :- true.
 
 %Money money money
-money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
+money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
+		 member(indicatorWeights(IndicatorID,'budget gemeente',_),LinkIndicator),
+		 indicator(IndicatorID,Budget,_,_).
+%progress building azc
+azc(Azc) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
+	    member(indicatorWeights(IndicatorID,'azc',_),LinkIndicator),
+	    indicator(IndicatorID,Current,Target,_), Azc = Target-Current.
 
 % We want a building if we need it
 buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
