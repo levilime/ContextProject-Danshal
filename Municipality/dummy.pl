@@ -11,19 +11,16 @@
 	zone/5,
 	building/7,
 	land/3,
+	my_stakeholder_id/1,
 	request/2,
 	havebuiltsomething/0,
 	land/3,
 	function/3,
 	actionlog/4.
 
-%getMyID/1 - myID(<StakeholderID)
-%<StakeholderID> - Numeral ID for the stakeholder the agent is representing. Output variable.
-getMyID(StakeholderID):- stakeholder(StakeholderID,'Gemeente',_,_).
-
 %getMyIndicatorList/1 - getMyIndicatorList(IndicatorList)
 %<IndicatorList> - A list of indicatorWeights representing all our indicators. Output variable.
-getMyIndicatorList(IndicatorList) :- getMyID(StakeholderID), indicatorLink(StakeholderID, IndicatorList).
+getMyIndicatorList(IndicatorList) :- my_stakeholder_id(StakeholderID), indicatorLink(StakeholderID, IndicatorList).
 
 %getMyIndicatorID/1 - getMyIndicatorID(<IndicatorID>)
 %<IndicatorID> - Numeral ID representing one of the indicators the agent has. - Output variable.
