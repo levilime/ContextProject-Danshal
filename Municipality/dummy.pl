@@ -16,7 +16,8 @@
 	havebuiltsomething/0,
 	land/3,
 	function/3,
-	actionlog/4.
+	actionlog/4,
+	my_stakeholder_id/1.
 
 %getMyIndicatorList/1 - getMyIndicatorList(IndicatorList)
 %<IndicatorList> - A list of indicatorWeights representing all our indicators. Output variable.
