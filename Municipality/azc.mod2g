@@ -8,13 +8,13 @@ module azc{
 
 	%Build an azc that has the right size or is smaller (minimum 40 units)
 	if bel(
-		azc(Azc), Azc>0,%get the amount of units we are short
+		azc(Azc),%Azc>0,%get the amount of units we are short
 		my_stakeholder_id(StakeholderID),%we need to own the land
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),%find land
-		Area>800, Area<20*Azc+800,%land may not be to big or small
+		%Area>800, Area<20*Azc+1000,%land may not be to big or small
 		member(Zone,Zones),%find zone
 		zone(Zone,_,_,_,Categories),%find zone category
 		member('SOCIAL',Categories),%zone should support function
 		money(X), X>1200*Area)%have the required money to build this azc
-		then adopt(buildAZC(LandID, max(Azc/Area/20,1))).%floors is calculated
+		then adopt(buildAZC(LandID, 1)).%floors is calculated
 }

@@ -22,14 +22,14 @@
 %We have a building if the building list has at least 1 element.
 havebuilding :- true.
 
-%Money money money
+% Money money money
 money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
-		 member(indicatorWeights(IndicatorID,'budget gemeente',_),LinkIndicator),
+		 member(indicatorWeights(IndicatorID,'Budget Gemeente',_),LinkIndicator),
 		 indicator(IndicatorID,Budget,_,_).
-%progress building azc
-azc(Azc) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
-	    member(indicatorWeights(IndicatorID,'azc',_),LinkIndicator),
-	    indicator(IndicatorID,Current,Target,_), Azc = Target-Current.
+% Progress building azc
+azc(Target-Current) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
+	    member(indicatorWeights(IndicatorID,'AZC',_),LinkIndicator),
+	    indicator(IndicatorID,Current,Target,_).
 
 % We want a building if we need it
 buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
