@@ -5,7 +5,7 @@ module green {
 	%Build green and parks to satisfy green indicator
 	
 	%Get the ID of the correct indicator and store it in the belief base.
-	if bel(stakeholder(StakeholderID,'Gemeente',_,_),indicatorLink(StakeholderID,LinkIndicator),
+	if bel(my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 		member(indicatorWeights(IndicatorID,'Gemeente Groen', IndicatorWeight),LinkIndicator))
 		then insert(greenId(IndicatorID,StakeholderID)).
 	
