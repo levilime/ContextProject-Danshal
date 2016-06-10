@@ -2,12 +2,31 @@ use dummy as knowledge.
 
 order = linearall.
 module azc{
-	%Check if there is still need for an azc (id 650)
-	if bel(building(BuildingID,_,OwnerID,_,_,650,_)) then exit-module.
-	%Check if we have budget for an azc
-	if bel(money(MoneyAmount),MoneyAmount<100000) then exit-module.
-	%Check if there is space for an azc
+	%if we have build an azc in the last ten cycles wait for indicators to update
+	if bel(azc_timeout(X), X>0, Y is X-1) then
+		delete(azc_timeout(X)) + insert(azc_timeout(Y)).
+	if bel(azc_timeout(X), X>0) then
+		exit-module.
+	
+	%if we already have a goal for building a specific azc we exit.
+	if goal(buildAZC(_,_)) then exit-module.
 
-	%Adopt if all preconditions are met
-	if true then adopt(buildAZC).
+	%Build an azc that has the right size or is smaller (minimum 40 units)
+	if bel(
+		%first check if there is demand for an azc
+		azc(Azc), Azc>0,
+		%find land that is ours and of an apropriate size
+		my_stakeholder_id(StakeholderID),
+		land(LandID,Stakeholder,MultiPoly,Zones,Area),
+		Area>750, Area<20*Azc+1000,
+		%make sure the zone supports an azc
+		member(Zone,Zones),
+		zone(Zone,_,_,_,Categories),
+		member('SOCIAL',Categories),
+		%Check if we have the funds to build an azc
+		Floors is integer(max(Azc/Area/20,1)),
+		money(X), X>(1200*Area)*Floors)
+		then adopt(buildAZC(LandID,Floors)) + 
+		%update timeout
+		delete(azc_timeout(0)) + insert(azc_timeout(10)).
 }
