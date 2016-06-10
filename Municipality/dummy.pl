@@ -31,9 +31,8 @@ azc(Target-Current) :- my_stakeholder_id(StakeholderID),indicatorLink(Stakeholde
 	    member(indicatorWeights(IndicatorID,'AZC',_),LinkIndicator),
 	    indicator(IndicatorID,Current,Target,_).
 
-% We want a building if we need it
+% We want a park if we need it
 buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
-%buildPark(ZoneID,MultiPolygon) :- building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories).
 
-% Azc's function ID is 650
-buildAZC(Land,Floors) :- building(BuildingID,_,OwnerID,_,_,650,Floors), land(Land,_,_,_,_).
+% We want a azc if we need it
+buildAZC(Land,Floors) :- land(Land,_,MultiPolygon,_,_), attempttoBuild(MultiPolygon).

@@ -9,16 +9,17 @@ module azc{
 	%Build an azc that has the right size or is smaller (minimum 40 units)
 	if bel(
 		%first check if there is demand
-		azc(Azc),%Azc>0,
+		azc(Azc), Azc>0,
 		%find land that is ours and of an apropriate size
 		my_stakeholder_id(StakeholderID),
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),
-		%%%Area>800, Area<20*Azc+1000,
+		Area>800, Area<20*Azc+1000,
 		%make sure the zone supports an azc
 		member(Zone,Zones),
 		zone(Zone,_,_,_,Categories),
 		member('SOCIAL',Categories),
 		%Check if we have the funds to build an azc
-		money(X), X>1200*Area)
-		then adopt(buildAZC(LandID,1)).%max(Azc/Area/20,1))).
+		Floors is integer(max(Azc/Area/20,1)),
+		money(X), X>(1200*Area)*Floors)
+		then adopt(buildAZC(LandID,Floors)).
 }
