@@ -1,8 +1,13 @@
 use dummy as knowledge.
 
-order = linear.
+order = linearall.
 module azc{
-
+	%if we have build an azc in the last ten cycles wait for indicators to update
+	if bel(azc_timeout(X), X>0, Y is X-1) then
+		delete(azc_timeout(X)) + insert(azc_timeout(Y)).
+	if bel(azc_timeout(X), X>0) then
+		exit-module.
+	
 	%if we already have a goal for building a specific azc we exit.
 	if goal(buildAZC(_,_)) then exit-module.
 
@@ -13,7 +18,7 @@ module azc{
 		%find land that is ours and of an apropriate size
 		my_stakeholder_id(StakeholderID),
 		land(LandID,Stakeholder,MultiPoly,Zones,Area),
-		Area>800, Area<20*Azc+1000,
+		Area>750, Area<20*Azc+1000,
 		%make sure the zone supports an azc
 		member(Zone,Zones),
 		zone(Zone,_,_,_,Categories),
@@ -21,5 +26,7 @@ module azc{
 		%Check if we have the funds to build an azc
 		Floors is integer(max(Azc/Area/20,1)),
 		money(X), X>(1200*Area)*Floors)
-		then adopt(buildAZC(LandID,Floors)).
+		then adopt(buildAZC(LandID,Floors)) + 
+		%update timeout
+		delete(azc_timeout(0)) + insert(azc_timeout(10)).
 }

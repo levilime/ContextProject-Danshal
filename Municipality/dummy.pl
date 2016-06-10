@@ -2,6 +2,7 @@
 :- dynamic
 	actionlog/4,
 	attempttoBuild/1,
+	azc_timeout/1,
 	building/7,
 	function/3,
 	functions/1,
@@ -27,9 +28,10 @@ money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,Li
 		 member(indicatorWeights(IndicatorID,'Budget Gemeente',_),LinkIndicator),
 		 indicator(IndicatorID,Budget,_,_).
 % Progress building azc
-azc(Target-Current) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
+azc(Result) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 	    member(indicatorWeights(IndicatorID,'AZC',_),LinkIndicator),
-	    indicator(IndicatorID,Current,Target,_).
+	    indicator(IndicatorID,Current,Target,_),
+	    Result is Target-(Current*500).
 
 % We want a park if we need it
 buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
