@@ -13,7 +13,7 @@ module azc{
 
 	%Build an azc that has the right size or is smaller (minimum 40 units)
 	if bel(
-		%first check if there is demand
+		%first check if there is demand for an azc
 		azc(Azc), Azc>0,
 		%find land that is ours and of an apropriate size
 		my_stakeholder_id(StakeholderID),
