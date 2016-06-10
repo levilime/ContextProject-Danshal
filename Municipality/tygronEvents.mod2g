@@ -73,12 +73,13 @@ module tygronEvents {
 		do delete(land(LandID,OwnerID,OldMultiPolygon,OldZoneList,OldSize)).
 		
 	%Request PERCEPT
-	%Only put those requests in the belief base that we need to answer.
+	%Only put those requests in the belief base that we need to answer and has size and price.
+	%Instead of the regular price calculate the price per squared meter.
 	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
 		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), not(AreaSize == "NO_SIZE"), not(Price == "NO_PRICE") , CalcPrice is Price / AreaSize)
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList)).
 		
-	%Only put those requests in the belief base that we need to answer.
+	%Only put those requests in the belief base that we need to answer has no size or no price.
 	forall percept(requests(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
 		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), (AreaSize == "NO_SIZE"; Price == "NO_PRICE"))
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
