@@ -1,9 +1,8 @@
 use dummy as beliefs.
-
+use dummy as knowledge.
 %The init module is ran only once at the startup of the agent.
 %Order of the module is standard linearall
 module tygronInit {
-		
 		%MY_STAKEHOLDER_ID PERCEPT
 		%Agents don't switch from stakeholder, so this only needs to be inserted once and should never change
 		if percept(my_stakeholder_id(StakeholderID)) then insert(my_stakeholder_id(StakeholderID)).
@@ -24,6 +23,10 @@ module tygronInit {
 		
 		forall percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(StakeholderID,IndWeights), SubList)) 
 			do insert(indicatorLink(StakeholderID,IndWeights)).
+		
+		%My_Indicator belief to store the indicatorIDs and indicatorWeights of the stakeholder itself.
+		forall bel(indicatorLink(StakeholderID, IndWeights), my_stakeholder_id(StakeholderID), member(indicatorWeights(IndicatorID, IndicatorName,IndicatorWeight), IndWeights))
+			do insert(my_indicator(IndicatorID, IndicatorWeight)) + print(IndWeights).
 		
 		%INDICATOR PERCEPT
 		%Indicators should be initialized to be used by the rule in the event module.
@@ -52,6 +55,16 @@ module tygronInit {
 		%CAN BE WRONG RULE, NOT ABLE TO TEST YET.
 		forall percept(requests(List)), bel(member(request(IDType,AnswerList),List))
 			do insert(request(IDType,AnswerList)).
+		
+		
+		%FEELING BELIEF
+		% to track if a stakeholder does things that improve our indicators
+		% if the stakeholder does well for us, the stakeholder can get permits for
+		% things that do not help our indicators directly
+		
+		forall bel(stakeholder(StakeholderID,Name,StartBudget,Income), not(my_stakeholder_id(StakeholderID))) do
+			insert(feeling(StakeholderID, 1)).
+		
 		
 		%Code from Wouter
 		%Inserts an initial belief so the send on change rules work which are mentioned in the event module.
