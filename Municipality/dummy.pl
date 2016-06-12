@@ -5,6 +5,7 @@
 	attempttoBuild/1,
 	azc_timeout/1,
 	building/7,
+	feeling/2,
 	function/3,
 	functions/1,
 	greenId/2,
@@ -12,6 +13,7 @@
 	indicator/4,
 	indicatorLink/2,
 	land/5,
+	my_indicator/2,
 	my_stakeholder_id/1,
 	open_request/9,
 	request/2,
@@ -20,6 +22,7 @@
 	settings/1,
 	stakeholder/4,
 	stakeholders/1,
+	total_sum/2,
 	zone/5,
 	zone_link/4.
 
