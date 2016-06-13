@@ -14,8 +14,12 @@ module azc{
 
 	%if we have no list of available land get it from the connector.
 	%TO-DO create an custom action that finds suitable polygons
-	if bel(not(azc_area(0,List)))%, MaxArea is 20*Azc+1000)
-		then get_relevant_areas(0, build, [Zone, Maxsize]).% MaxArea).
+	if bel(not(azc_area(0,List)),
+		azc(Azc),
+		MaxArea is 20*Azc+1000,
+		zone(Zone,_,_,_,Categories),
+		member('SOCIAL',Categories))
+		then get_relevant_areas(0, ext, [750, MaxArea, Zone]).% MaxArea).
 	%We will get back a list of area objects
 	
 	%Build an azc that has the right size or is smaller (minimum 40 units)

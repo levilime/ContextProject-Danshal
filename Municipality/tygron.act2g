@@ -13,6 +13,6 @@ define popup_answer(RequestID, AnswerID) with
 	post{(answered_request(RequestID, AnswerID))}
 
 % Get relevant area's from the tygron environment
-define get_relevant_areas(CallID, ActionType, MaxSize) with
+define get_relevant_areas(CallID, ActionType, Filters) with
 	pre { true }
 	post{ true }
