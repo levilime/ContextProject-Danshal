@@ -11,3 +11,11 @@ define	building_plan_construction(FunctionID, Floors, MultiPolygon) with
 define popup_answer(RequestID, AnswerID) with
 	pre{true}
 	post{(answered_request(RequestID, AnswerID))}
+	
+define popup_answer_with_date(RequestID, AnswerID, Date) with
+	pre { true }
+	post { true }
+	
+define building_plan_demolish(BuildingID) with
+	pre { true }
+	post {true }

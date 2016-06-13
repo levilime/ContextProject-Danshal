@@ -3,6 +3,7 @@ use kapafunctions as knowledge.
 use green as module.
 use azc as module.
 use negotiation as module.
+use tygron as actionspec.
 
 module tygronEvents {
 	
@@ -84,6 +85,14 @@ module tygronEvents {
 		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), (AreaSize == "NO_SIZE"; Price == "NO_PRICE"))
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
+	%Only put those requests in the belief base that we need to answer.
+	forall percept(requests(List)), bel(member(request("INTERACTION_WITH_DATE", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List))
+		%do insert(open_request(RequestType, ID, ContentLinkID, 4, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)) + popup_answer_with_date(ID, 1, 0).
+		%do popup_answer(ID, 1) + 
+		do popup_answer_with_date(ID, 0, 0).
+		
+	if percept(requests(List)) then print(requests(List)).
+		
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
@@ -94,6 +103,6 @@ module tygronEvents {
 	if true then negotiation.
 	
 	%Account for the indicator concerning green.
-	if true then green.
-	if true then azc.
+	%if true then green.
+	%if true then azc.
 }

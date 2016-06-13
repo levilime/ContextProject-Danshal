@@ -50,12 +50,6 @@ module tygronInit {
 		%Fallback insert rule, so we're sure they get inserted in the first cycle.
 		forall percept(lands(List)), bel(member(land(LandID, OwnerID, MultiPolygon,ZoneList,Size), List))
 			do insert(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
-			
-		%REQUEST PERCEPT
-		%Fallback insert rule, so we're sure they get inserted in the first cycle.
-		%CAN BE WRONG RULE, NOT ABLE TO TEST YET.
-		forall percept(requests(List)), bel(member(request(IDType,AnswerList),List))
-			do insert(request(IDType,AnswerList)).
 		
 		
 		%FEELING BELIEF

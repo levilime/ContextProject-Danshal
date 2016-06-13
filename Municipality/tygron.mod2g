@@ -15,17 +15,6 @@ module tygron {
 	
 	% If there is a goal to have a park, build a park.
 	% Add budget restriction rule, don't build a park when low on money!
-	if goal(buildPark(ZoneID,MultiPolygon)), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 
-		then building_plan_construction(FunctionID, 1, MultiPolygon).
-	
-	% If there is a goal to have an AZC, build an AZC.
-	if goal(buildAZC), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList)) 
-		then building_plan_construction(FunctionID, 1, multipolygon('MULTIPOLYGON (((10 20, 10 30, 210 30, 210 20, 10 20)))')).
-	
-	% If there is a function to build a road
-	% Then use building_plan_construction to build it (always 1 floor)
-	if bel(functions(FunctionList), member([_,FunctionID,List],FunctionList), member('ROAD',List)) 
-		then building_plan_construction(FunctionID, 1, multipolygon('MULTIPOLYGON (((10 30, 10 40, 210 40, 210 30, 10 30)))')).
-
-
+	%if goal(buildPark(ZoneID,MultiPolygon)), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 
+	%	then building_plan_construction(FunctionID, 1, MultiPolygon).
 }
