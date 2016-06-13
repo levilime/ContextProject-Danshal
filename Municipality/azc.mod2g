@@ -1,7 +1,7 @@
 use dummy as knowledge.
 use tygron as actionspec.
 
-order = linearall.
+order = linear.
 module azc{
 	%if we have build an azc in the last ten cycles wait for indicators to update
 	if bel(azc_timeout(X), X>0, Y is X-1) then
@@ -13,21 +13,20 @@ module azc{
 	if goal(buildAZC(_,_)) then exit-module.
 
 	%if we have no list of available land get it from the connector.
-	%TO-DO create an custom action that finds suitable polygons
 	if bel(not(azc_area(0,List)),
 		azc(Azc),
-		MaxArea is 20*Azc+1000,
-		zone(Zone,_,_,_,Categories),
-		member('SOCIAL',Categories))
-		then get_relevant_areas(0, ext, [750, MaxArea, Zone]).% MaxArea).
+		MaxArea is 20*Azc+1000
+		%zone(Zone,_,_,_,Categories),
+		%member('SOCIAL',Categories))
+		then get_relevant_areas(0, ext, [750, 6000, 4]).
 	%We will get back a list of area objects
 	
 	%Build an azc that has the right size or is smaller (minimum 40 units)
 	if bel(
 		%test custom action
-		azc_area(0,[[Poly|Y]|Rest]),
+		azc_area(0,[[Poly|Y]|Rest])
 		%first check if there is demand
-		azc(Azc), Azc>0
+		%azc(Azc), Azc>0
 		%find land that is ours and of an apropriate size
 		%my_stakeholder_id(StakeholderID),
 		%land(LandID,Stakeholder,MultiPoly,Zones,Area),
