@@ -27,13 +27,23 @@ module negotiation {
 	%For all open requests that have a total score lower than 0 and has favors, adopt the goal to accept it.
 	%The stakeholder belonging to this request loses favor.
 	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, 
-	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 1) do
+	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 2) do
 		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
+		
+	
+	% Accept Buy land request if price is sufficient
+	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList), not(CalcPrice == "NO_PRICE"), minpriceland(SenderID, MinPrice), CalcPrice >= MinPrice)
+		do adopt(answered_request("BUY_LAND", ID, 0)) + print(minpriceland(SenderID, MinPrice)) + print(CalcPrice).
+	
+	% Deny Buy land request if price is not sufficient
+	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList), not(CalcPrice == "NO_PRICE") , minpriceland(SenderID, MinPrice), CalcPrice < MinPrice)
+		do adopt(answered_request("BUY_LAND", ID, 1)).
+		
+	% If there is no price do not accept the Buy Land Request
+	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, "NO PRICE", Multipolygon, AreaSize, AnswerList))
+		do adopt(answered_request("BUY_LAND", ID, 1)).
+		
 		
 	%For all open requests without actionlogIDs, adopt the goal to accept it.	
 	forall bel(open_request(RequestType, ID, _, _, [], _, _, _, _)) do adopt(answered_request(RequestType, ID, 0)).
-		
-	%For all open requests that have an actionlogID, but do not have the actionlog in its belief base, adopt the goal to acccept it.	
-	forall bel(actionlogRequestLink(RequestType, ID, SenderID, ActionID), not(actionlog(_,_,ActionID,_))) 
-		do adopt(answered_request(RequestType, ID, 0)) .
 }

@@ -41,4 +41,8 @@ buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
 %Link the actionlogs to the open requests that need to be answered.
 actionlogRequestLink(RequestType, ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
 	member(ActionID, ActionlogIDs).
-
+	
+minpriceland(ID, 150) :- stakeholder(ID, "DUWO",_,_).
+minpriceland(ID, 450) :- stakeholder(ID, "Private Woningbouw Burgers",_,_).
+minpriceland(ID, 300) :- stakeholder(ID, "TU",_,_).
+minpriceland(ID, 250) :- stakeholder(ID, "Voorzieningen",_,_).
