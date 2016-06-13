@@ -39,13 +39,13 @@ money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,Li
 azc(Result) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 	    member(indicatorWeights(IndicatorID,'AZC',_),LinkIndicator),
 	    indicator(IndicatorID,Progress,Target,_),
-	    Result is Target-(Progress*Target0).
+	    Result is Target-(Progress*Target).
 
 % We want a park if we need it
 buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
 
 % We want a azc if we need it
-buildAZC(Land,Floors) :- land(Land,_,MultiPolygon,_,_), attempttoBuild(MultiPolygon).
+buildAZC(MultiPolygon,Floors) :- attempttoBuild(MultiPolygon).
 
 %Link the actionlogs to the open requests that need to be answered.
 actionlogRequestLink(ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 

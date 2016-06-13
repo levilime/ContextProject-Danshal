@@ -18,9 +18,8 @@ module tygron {
 		then building_plan_construction(FunctionID, 1, MultiPolygon).
 	
 	% If there is a goal to have an AZC, build an AZC.
-	if goal(buildAZC(Poly,Floors)), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList), 
-		land(Land,_,MultiPolygon,_,_))
-		then building_plan_construction(FunctionID, Floors, Poly).
+	if goal(buildAZC(MultiPolygon,Floors)), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList))
+		then building_plan_construction(FunctionID, Floors, MultiPolygon).
 	
 	% If there is a function to build a road
 	% Then use building_plan_construction to build it (always 1 floor)
