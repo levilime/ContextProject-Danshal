@@ -86,10 +86,9 @@ module tygronEvents {
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
 	%Only put those requests in the belief base that we need to answer.
-	forall percept(requests(List)), bel(member(request("INTERACTION_WITH_DATE", RequestType, ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List))
-		%do insert(open_request(RequestType, ID, ContentLinkID, 4, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)) + popup_answer_with_date(ID, 1, 0).
-		%do popup_answer(ID, 1) + 
-		do popup_answer_with_date(ID, 0, 0).
+	forall percept(requests(List)), bel(member(request("INTERACTION_WITH_DATE", "PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", "PERMIT", _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
+		do insert(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
 	if percept(requests(List)) then print(requests(List)).
 		

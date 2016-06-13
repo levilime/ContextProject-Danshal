@@ -19,7 +19,7 @@
 	my_stakeholder_id/1,
 	open_request/9,
 	requests/1,
-	answered_request/2,
+	answered_request/3,
 	my_indicator/2,
 	sum_indicators/2,
 	total_sum/2,
