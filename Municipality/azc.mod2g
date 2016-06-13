@@ -22,7 +22,7 @@ module azc{
 		zone(Zone,_,_,_,Categories),
 		member('SOCIAL',Categories))
 		%we want up to 10, polygons
-		then get_relevant_areas(0, ext, [10, MinArea, MaxArea, Zone]).
+		then get_relevant_areas(0, ext, [5, MinArea, MaxArea, Zone]).
 	
 	%Build an azc that has the right size
 	if bel(
