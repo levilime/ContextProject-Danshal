@@ -17,10 +17,12 @@ module azc{
 		%find maximal neccesary size
 		azc(Azc), Azc>0,
 		MaxArea is 20*Azc+1000,
+		MinArea is MaxArea/4,
 		%find a zone that supports an azc
 		zone(Zone,_,_,_,Categories),
 		member('SOCIAL',Categories))
-		then get_relevant_areas(0, ext, [750, MaxArea, Zone]).
+		%we want up to 10, polygons
+		then get_relevant_areas(0, ext, [10, MinArea, MaxArea, Zone]).
 	
 	%Build an azc that has the right size
 	if bel(
