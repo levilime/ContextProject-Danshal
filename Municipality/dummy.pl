@@ -16,7 +16,14 @@
 	havebuiltsomething/0,
 	function/3,
 	actionlog/4,
-	my_stakeholder_id/1.
+	my_stakeholder_id/1,
+	open_request/9,
+	requests/1,
+	answered_request/2,
+	my_indicator/2,
+	sum_indicators/2,
+	total_sum/2,
+	feeling/2.
 
 %getMyIndicatorList/1 - getMyIndicatorList(IndicatorList)
 %<IndicatorList> - A list of indicatorWeights representing all our indicators. Output variable.
@@ -55,4 +62,8 @@ buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
 
 % Azc's function ID is 650
 buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
+
+%Link the actionlogs to the open requests that need to be answered.
+actionlogRequestLink(ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
+	member(ActionID, ActionlogIDs).
 

@@ -8,6 +8,9 @@ exit=never.
 %Order of the module is standard linear.
 module tygron {
 
+	% If there is a goal to answer a request, answer the request.
+	if goal(answered_request(RequestID, AnswerID)) , bel(open_request(RequestType, RequestID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList))then popup_answer(RequestID, AnswerID)
+		 + delete(open_request(RequestType, RequestID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 	
 	% If there is a goal to have a park, build a park.
 	% Add budget restriction rule, don't build a park when low on money!
