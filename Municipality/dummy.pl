@@ -38,3 +38,7 @@ buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
 % Azc's function ID is 650
 buildAZC :- building(BuildingID,_,OwnerID,_,_,650,_).
 
+%Link the actionlogs to the open requests that need to be answered.
+actionlogRequestLink(RequestType, ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
+	member(ActionID, ActionlogIDs).
+

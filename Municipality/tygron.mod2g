@@ -1,5 +1,4 @@
 use dummy as knowledge.
-use dummy as beliefs.
 use tygron as actionspec.
 use somegoal as goals.
 

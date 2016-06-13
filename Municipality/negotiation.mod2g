@@ -4,12 +4,10 @@ order = linearall.
 
 module negotiation {
 	
-	%For all the open requests that have actionlogIDs and the actionlogs that have indicators that influence the own indicators.
-	%Setup to check the total score of combining the indicatorWeights and increases/decreases for an action.
-	forall bel(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
-	actionlog(StakeholderID,Description,ActionID,IncList), member(ActionID, ActionlogIDs), member([IndicatorID, Increase], IncList),
-	my_indicator(IndicatorID, Weight),
-	Weighed_value is Increase * Weight)
+	%For all the open requests that have corresponding actionlogs and influenced indicators for the own stakeholder,
+	%do a setup to check the total score by multiplying the indicatorWeight and the increase/decrease for the action of the request.
+	forall bel( actionlogRequestLink("PERMIT", ID, SenderID, ActionID), actionlog(_,_,ActionID,IncList), member([IndicatorID, Increase], IncList),
+	my_indicator(IndicatorID, Weight), Weighed_value is Increase * Weight)
 		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)).
 		
 	%Sum all the weighed values for the same actionID together.
@@ -18,26 +16,24 @@ module negotiation {
 	
 	%For all open requests that have a total score higher or equal to 0, adopt the goal to accept it.
 	%For such a stakeholder that makes an improvement gains favor.
-	forall bel(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), member(ActionID, ActionlogIDs), 
-	total_sum(ActionID, Sum), Sum >= 0, feeling(SenderID, Favors), New_Favors is Favors + 1) do
-		adopt(answered_request("PERMIT", ID, 0)) + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
+	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum >= 0, feeling(SenderID, Favors), New_Favors is Favors + 1) do
+		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
 		
-	%For all open requests that have a total score lower than 0, adopt the goal to reject it.	
-	forall bel(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), member(ActionID, ActionlogIDs), 
-	total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors =< 0) do
-		adopt(answered_request("PERMIT", ID, 1)) + delete(total_sum(ActionID, Sum)).
+	%For all open requests that have a total score lower than 0 and no has no favors, adopt the goal to reject it.
+	%The favor of this stakeholder stays the same.
+	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors =< 0) do
+		adopt(answered_request("PERMIT", ID, 1))  + delete(total_sum(ActionID, Sum)).
 		
-	%For all open requests that have a total score lower than 0, adopt the goal to reject it.
-	%The stakeholder that gets this request accepted that lowers our indicators loses favor.
-	forall bel(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), member(ActionID, ActionlogIDs), 
-	total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 1) do
-		adopt(answered_request("PERMIT", ID, 0)) + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
+	%For all open requests that have a total score lower than 0 and has favors, adopt the goal to accept it.
+	%The stakeholder belonging to this request loses favor.
+	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, 
+	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 1) do
+		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
 		
 	%For all open requests without actionlogIDs, adopt the goal to accept it.	
-	forall bel(open_request(RequestType, ID, ContentLinkID, SenderID, [], Price, Multipolygon, AreaSize, AnswerList)) do adopt(answered_request(RequestType, ID, 0)).
+	forall bel(open_request(RequestType, ID, _, _, [], _, _, _, _)) do adopt(answered_request(RequestType, ID, 0)).
 		
 	%For all open requests that have an actionlogID, but do not have the actionlog in its belief base, adopt the goal to acccept it.	
-	forall bel(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), member(ActionID, ActionlogIDs),
-	not(actionlog(_,_,ActionID,_))) 
-		do adopt(answered_request(RequestType, ID, 0)).
+	forall bel(actionlogRequestLink(RequestType, ID, SenderID, ActionID), not(actionlog(_,_,ActionID,_))) 
+		do adopt(answered_request(RequestType, ID, 0)) .
 }
