@@ -44,6 +44,6 @@ module negotiation {
 		do adopt(answered_request("BUY_LAND", ID, 1)).
 		
 		
-	%For all open requests without actionlogIDs, adopt the goal to accept it.	
-	forall bel(open_request(RequestType, ID, _, _, [], _, _, _, _)) do adopt(answered_request(RequestType, ID, 0)).
+	%For all open requests that are left, accept them
+	forall bel(open_request(RequestType, ID, _, _, _, _, _, _, _), not(answered_request(_, ID, _))) do adopt(answered_request(RequestType, ID, 0)).
 }
