@@ -1,4 +1,5 @@
 use dummy as knowledge.
+use tygron as actionspec.
 
 order = linearall.
 module azc{
@@ -11,22 +12,33 @@ module azc{
 	%if we already have a goal for building a specific azc we exit.
 	if goal(buildAZC(_,_)) then exit-module.
 
+	%if we have no list of available land get it from the connector.
+	%TO-DO create an custom action that finds suitable polygons
+	if bel(not(azc_area(0,List)))%, MaxArea is 20*Azc+1000)
+		then get_relevant_areas(0, build, [Zone, Maxsize]).% MaxArea).
+	%We will get back a list of area objects
+	
 	%Build an azc that has the right size or is smaller (minimum 40 units)
 	if bel(
+		%test custom action
+		azc_area(0,[[Poly|Y]|Rest]),
 		%first check if there is demand
-		azc(Azc), Azc>0,
+		azc(Azc), Azc>0
 		%find land that is ours and of an apropriate size
-		my_stakeholder_id(StakeholderID),
-		land(LandID,Stakeholder,MultiPoly,Zones,Area),
-		Area>750, Area<20*Azc+1000,
+		%my_stakeholder_id(StakeholderID),
+		%land(LandID,Stakeholder,MultiPoly,Zones,Area),
+		%Area>750, Area<20*Azc+1000,
 		%make sure the zone supports an azc
-		member(Zone,Zones),
-		zone(Zone,_,_,_,Categories),
-		member('SOCIAL',Categories),
+		%member(Zone,Zones),
+		%zone(Zone,_,_,_,Categories),
+		%member('SOCIAL',Categories),
 		%Check if we have the funds to build an azc
-		Floors is integer(max(Azc/Area/20,1)),
-		money(X), X>(1200*Area)*Floors)
-		then adopt(buildAZC(LandID,Floors)) + 
+		%Floors is integer(max(Azc/Area/20,1)),
+		%money(X), X>(1200*Area)*Floors)
+		then adopt(buildAZC(Poly,1)) + 
 		%update timeout
-		delete(azc_timeout(0)) + insert(azc_timeout(10)).
+		delete(azc_timeout(0)) + insert(azc_timeout(10)) +
+		%remove building option
+		delete(azc_area(0,[[Poly|Y]|Rest])) +
+		insert(azc_area(0,Rest)).
 }

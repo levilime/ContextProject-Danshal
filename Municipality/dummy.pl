@@ -3,6 +3,7 @@
 	actionlog/4,
 	answered_request/2,
 	attempttoBuild/1,
+	azc_area/2,
 	azc_timeout/1,
 	building/7,
 	feeling/2,
@@ -22,6 +23,7 @@
 	settings/1,
 	stakeholder/4,
 	stakeholders/1,
+	sum_indicators/2,
 	total_sum/2,
 	zone/5,
 	zone_link/4.
