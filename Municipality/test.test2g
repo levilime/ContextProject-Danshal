@@ -2,6 +2,7 @@ use Tygron as mas.
 use dummy as knowledge.
 use tygron as module.
 use azc as module.
+use tygronEvents as module.
 use somegoal as goals.
 
 timeout = 300.
@@ -56,7 +57,55 @@ test azc with
 		percept(money(999999)), bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors))
 			leadsto not(goal(buildAZC)).%should fail, no need	
 	}
-	post{true}	
+	post{true}
+
+%Tests for the event module	
+test tygronEvents with
+	pre{true}
+	in{
+		
+		%A predicate that is perceived should always be inserted.
+		percept(indicators(List)), bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List))
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		
+		percept(action_logs(List)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),List))
+			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
+			
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+			
+		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriestList),List))
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		
+		percept(lands(List)), bel(member(land(LandID,OwnerID,MultiPolygon,ZoneList,Size),List))
+			leadsto bel(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
+			
+		percept(request(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, [SenderID|_], ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List))
+			leadsto bel(request("INTERACTION", RequestType, ID, ContentLinkID, SendrID, ActionlogIDs, _, Multipolygon, AreaSize, AnswerList)).
+		
+		%A predicate that is not perceived should be deleted.	
+		percept(indicators(List)), bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList), 
+			not(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)))
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		
+		percept(action_logs(List)), bel(actionlog(StakeholderID,Description,ActionID,IncList),
+			not(member(actionlog(StakeholderID,Description,ActionID,IncList),List)))
+			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
+			
+		percept(buildings(List)), bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),
+			member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+			
+		percept(zones(List)), bel(zone(ZoneID,Name,Floors,Size,CategoriesList),
+			not(member(zone(ZoneID,Name,Floors,Size,CategoriestList),List)))
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		
+		percept(lands(List)), bel(land(LandID,Owner,MultiPolygon,ZoneList,Size),
+			not(member(land(LandID,OwnerID,MultiPolygon,ZoneList,Size),List)))
+			leadsto bel(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
+		
+	}
+	post{true}
 	
 	tygronagent {
 		do tygron.
