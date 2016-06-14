@@ -45,5 +45,5 @@ module negotiation {
 		
 		
 	%For all open requests that are left, accept them
-	forall bel(open_request(RequestType, ID, _, _, _, _, _, _, _), not(answered_request(_, ID, _))) do adopt(answered_request(RequestType, ID, 0)).
+	forall bel(open_request(RequestType, ID, _, _, _, _, _, _, _)), not(goal(answered_request(_, ID, _))) do adopt(answered_request(RequestType, ID, 0)).
 }

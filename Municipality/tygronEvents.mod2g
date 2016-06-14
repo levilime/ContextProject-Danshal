@@ -90,8 +90,6 @@ module tygronEvents {
 		member(request("INFORMATION", "PERMIT", _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
 		do insert(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
-	if percept(requests(List)) then print(requests(List)).
-		
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
@@ -102,6 +100,6 @@ module tygronEvents {
 	if true then negotiation.
 	
 	%Account for the indicator concerning green.
-	%if true then green.
-	%if true then azc.
+	if true then green.
+	if true then azc.
 }
