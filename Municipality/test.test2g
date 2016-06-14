@@ -10,7 +10,12 @@ timeout = 300.
 test tygron with
 	pre{true}
 	in{
-
+		%If you have the goal to answer a request then answer it, regardless of the answer
+		goal(answered_request(RequestID,AnswerID)) leadsto done(popup_answer(RequestID,AnswerID)).
+		
+		%If you have the goal to build an AZC or Park or Road, plan to construct one.
+		goal(buildPark(ZoneID,MultiPolygon)) leadsto done(building_plan_construction(_, 1, MultiPolygon)).
+		%Add tests later for the other goals when they are not hardcoded in the module.
 	}
 	post{true}		
 	
