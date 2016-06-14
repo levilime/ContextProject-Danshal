@@ -3,6 +3,7 @@ use dummy as knowledge.
 use tygron as module.
 use azc as module.
 use tygronEvents as module.
+use tygronInit as module.
 use somegoal as goals.
 
 timeout = 300.
@@ -10,7 +11,8 @@ timeout = 300.
 test tygron with
 	pre{true}
 	in{
-		%If you have the goal to answer a request then answer it, regardless of the answer
+		%If you have the goal to answer a request then answer it, regardless of the answer.
+		%We don't check on the function prerequisite as it is always present.
 		goal(answered_request(RequestID,AnswerID)) leadsto done(popup_answer(RequestID,AnswerID)).
 		
 		%If you have the goal to build an AZC or Park or Road, plan to construct one.
@@ -19,10 +21,30 @@ test tygron with
 	}
 	post{true}		
 	
-test azc with
+test tygronInit with
 	pre{true}
 	in{ 
 		
+		%A predicate that is perceived should be added to the belief base.
+		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
+		
+		percept(stakeholders(List)), bel(member(SubList, List), member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList))
+			leadsto bel(stakeholder(StakeholderID,Name,StartBudget,Income)).
+		
+		percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(StakeholderID,IndWeights), SubList))
+			leadsto bel(indicatorLink(StakeholderID,IndWeights)).
+		
+		percept(indicators(List)), bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List))
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		
+		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriestList),List))
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		
+		percept(lands(List)), bel(member(land(LandID,OwnerID,MultiPolygon,ZoneList,Size),List))
+			leadsto bel(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
+			
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
 	}
 	post{true}
 
@@ -76,4 +98,7 @@ test tygronEvents with
 	
 	tygronagent {
 		do tygron.
+		do tygronInit.
+		do tygronEvents.
+		
 	}
