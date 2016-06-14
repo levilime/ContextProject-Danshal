@@ -2,7 +2,6 @@ use dummy as knowledge.
 use green as module.
 use azc as module.
 use negotiation as module.
-use tygron as actionspec.
 
 module tygronEvents {
 	
