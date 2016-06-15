@@ -29,11 +29,6 @@
 %<IndicatorList> - A list of indicatorWeights representing all our indicators. Output variable.
 getMyIndicatorList(IndicatorList) :- my_stakeholder_id(StakeholderID), indicatorLink(StakeholderID, IndicatorList).
 
-%getMyIndicatorID/1 - getMyIndicatorID(<IndicatorID>)
-%<IndicatorID> - Numeral ID representing one of the indicators the agent has. - Output variable.
-getRandomIndicatorID(IndicatorID) :- getMyIndicatorList(IndicatorList), 
-					member(indicatorWeights(IndicatorID,_,_),IndicatorList).
-
 %getSpecificIndicatorID/2 - getSpecificIndicatorID(<IndicatorName>,<IndicatorID>)
 %<IndicatorName> - Name of the indicator in the IndicatorWeights percept - Input variable.
 %<IndicatorID> - Numeral ID representing that specific indicator. - Output variable.
