@@ -45,7 +45,7 @@ azc(Result) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,Link
 buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
 
 % We want a azc if we need it
-buildAZC(MultiPolygon,Floors) :- attempttoBuild(MultiPolygon).
+buildAZC(MultiPolygon) :- attempttoBuild(MultiPolygon).
 
 %Link the actionlogs to the open requests that need to be answered.
 actionlogRequestLink(ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 

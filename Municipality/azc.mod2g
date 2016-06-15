@@ -36,9 +36,8 @@ module azc{
 		%grab a polygon from our list
 		azc_area(0,[[Poly|Y]|Rest])	,
 		%Check if we have the funds to build an azc
-		%Floors is integer(max(Azc/Area/20,1)), currently we dont get the size so this won't work yet
 		money(X), X>(1200*20*Azc))
-		then adopt(buildAZC(Poly,1)) + 
+		then adopt(buildAZC(Poly)) + 
 		%update timeout
 		delete(azc_timeout(0)) + insert(azc_timeout(10)) +
 		%remove building option
