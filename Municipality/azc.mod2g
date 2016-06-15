@@ -10,7 +10,7 @@ module azc{
 		exit-module.
 	
 	%if we already have a goal for building a specific azc we exit.
-	if goal(buildAZC(_,_)) then exit-module.
+	if goal(buildAZC(_)) then exit-module.
 
 	%If we have no list of available land get it from the connector.
 	if bel(not(azc_area(0,List)),
