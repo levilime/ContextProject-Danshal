@@ -15,7 +15,8 @@ module tygronInit {
 		%FUNCTION PERCEPT
 		%There will not be a change in functions during a session.
 		
-		forall percept(functions(FunctionList)), bel(member([FunctionName,FunctionID,List], FunctionList))
+		forall percept(functions(FunctionList)), bel(usefulFunctions(List), 
+			member(FunctionName, List), member([FunctionName,FunctionID,List], FunctionList))
 			do insert(function(FunctionName,FunctionID,List)).
 		
 		%INDICATORLINK PERCEPT
@@ -69,6 +70,5 @@ module tygronInit {
 		%Code from Wouter
 		%Inserts an initial belief so the send on change rules work which are mentioned in the event module.
 		if true then insert(settings([])).
-		if true then insert(functions([])).
 		
 }
