@@ -14,12 +14,12 @@ module azc{
 
 	%If we have no list of available land get it from the connector.
 	if bel(not(azc_area(0,List)),
-		%do we have enough money
-		money(X), X>(750*20*Azc),
 		%find maximal neccesary size
 		azc(Azc), Azc>0,
 		MaxArea is 20*Azc+1000,
 		MinArea is max(MaxArea/4,500),
+		%do we have enough money
+		money(X), X>(750*20*Azc),
 		%find a zone that support an azc and that we own land in
 		my_stakeholder_id(StakeholderID),
 		land(_,StakeholderID,_,ZoneList,_),
