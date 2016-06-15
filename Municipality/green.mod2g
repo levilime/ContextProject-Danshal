@@ -20,7 +20,4 @@ module green {
 		Size < 20000),
 		not(goal(buildPark(ZoneID,_))), not(bel(attempttoBuild(MultiPolygon)))
 		then adopt(buildPark(ZoneID, MultiPolygon)).
-	
-	%if not(bel(building(BuildingID,_,OwnerID,_,Categories,_,_), member('PARK',Categories))) then adopt(buildPark).
-	%forall bel(greenId(IndId), zone_link(ZoneId, IndId, Current, Target), Progress is Current/Target) do adopt(buildPark(ZoneId, Progress)).
 }
