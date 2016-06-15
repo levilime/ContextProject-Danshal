@@ -21,9 +21,6 @@
 	total_sum/2,
 	feeling/2.
 
-%We have a building if the building list has at least 1 element.
-havebuilding :- true.
-
 %Money money money
 money(StartBudget) :- stakeholder(_,'Gemeente',StartBudget,_).
 
