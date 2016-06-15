@@ -7,14 +7,13 @@ module tygronEvents {
 	
 	%RELEVANT AREA PERCEPT
 	%Percepts the relevant area's from the get_relevant_area's action
-	if percept(relevant_areas(CallerID,Areas)), 
-			not(bel(azc_area(CallerID,Areas))) 
-			then insert(azc_area(CallerID,Areas)).
-	
-	if percept(relevant_areas(CallerID,Areas)), 
-			bel(azc_area(CallerID,OldAreas)) 
-			then delete(azc_area(CallerID,OldAreas)) 
-			+ insert(azc_area(CallerID,Areas)).
+	if percept(relevant_areas(0,Areas)), 
+			not(bel(azc_area(0,Areas))) 
+			then insert(azc_area(0,Areas)).
+			
+	if percept(relevant_areas(1,Areas)), 
+			not(bel(park_area(1,Areas))) 
+			then insert(park_area(1,Areas)).
 	
 	%INDICATOR PERCEPT
 	%Indicator should not be able to be added or deleted during a session. But their current value can change

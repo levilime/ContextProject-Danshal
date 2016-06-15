@@ -10,7 +10,7 @@ module azc{
 		exit-module.
 	
 	%if we already have a goal for building a specific azc we exit.
-	if goal(buildAZC(_,_)) then exit-module.
+	if goal(buildAZC(_)) then exit-module.
 
 	%If we have no list of available land get it from the connector.
 	if bel(not(azc_area(0,List)),
@@ -34,8 +34,8 @@ module azc{
 		%first check if there still is demand
 		azc(Azc), Azc>0,
 		%grab a polygon from our list
-		azc_area(0,[[Poly|Y]|Rest])	,
-		%Check if we have the funds to build an azc
+		azc_area(0,[[Poly|Y]|Rest]),
+		%check if we have the funds to build an azc
 		money(X), X>(1200*20*Azc))
 		then adopt(buildAZC(Poly)) + 
 		%update timeout

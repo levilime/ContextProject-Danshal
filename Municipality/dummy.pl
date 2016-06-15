@@ -9,7 +9,6 @@
 	feeling/2,
 	function/3,
 	functions/1,
-	greenId/2,
 	havebuiltsomething/0,
 	indicator/4,
 	indicatorLink/2,
@@ -17,6 +16,7 @@
 	my_indicator/2,
 	my_stakeholder_id/1,
 	open_request/9,
+	park_area/2,
 	request/2,
 	requests/1,
 	self/1,
@@ -35,6 +35,11 @@ havebuilding :- true.
 money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 		 member(indicatorWeights(IndicatorID,'Budget Gemeente',_),LinkIndicator),
 		 indicator(IndicatorID,Budget,_,_).
+
+% Get the indicator id of green
+green(IndicatorID,StakeholderID) :- my_stakeholder_id(StakeholderID), indicatorLink(StakeholderID,LinkIndicator),
+		member(indicatorWeights(IndicatorID,'Gemeente Groen', IndicatorWeight),LinkIndicator).
+
 % Progress building azc
 azc(Result) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 	    member(indicatorWeights(IndicatorID,'AZC',_),LinkIndicator),
@@ -42,7 +47,7 @@ azc(Result) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,Link
 	    Result is Target-(Progress*Target).
 
 % We want a park if we need it
-buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
+buildPark(MultiPolygon) :- attempttoBuild(MultiPolygon).
 
 % We want a azc if we need it
 buildAZC(MultiPolygon) :- attempttoBuild(MultiPolygon).
