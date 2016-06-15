@@ -87,8 +87,6 @@ module tygronEvents {
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
-	%Deletes the old settings list and insert the new one if there is an update of the settings
-	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
 	
 	%Go into the negotiation module.
 	if true then negotiation.

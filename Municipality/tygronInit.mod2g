@@ -65,10 +65,6 @@ module tygronInit {
 		forall bel(stakeholder(StakeholderID,Name,StartBudget,Income), not(my_stakeholder_id(StakeholderID))) do
 			insert(feeling(StakeholderID, 1)).
 		
-		
-		%Code from Wouter
-		%Inserts an initial belief so the send on change rules work which are mentioned in the event module.
-		if true then insert(settings([])).
 		if true then insert(functions([])).
 		
 }

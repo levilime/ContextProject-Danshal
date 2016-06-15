@@ -1,6 +1,5 @@
 %Definition for beliefs
-:- dynamic settings/1,
-	functions/1,
+:- dynamic functions/1,
 	indicator/4,
 	indicatorLink/2,
 	greenId/2,
