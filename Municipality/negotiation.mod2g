@@ -30,7 +30,7 @@ module negotiation {
 	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 2) do
 		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
 		
-	
+		
 	% Accept Buy land request if price is sufficient
 	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList), not(CalcPrice == "NO_PRICE"), minpriceland(SenderID, MinPrice), CalcPrice >= MinPrice)
 		do adopt(answered_request("BUY_LAND", ID, 0)) + print(minpriceland(SenderID, MinPrice)) + print(CalcPrice).
@@ -43,6 +43,10 @@ module negotiation {
 	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, "NO PRICE", Multipolygon, AreaSize, AnswerList))
 		do adopt(answered_request("BUY_LAND", ID, 1)).
 		
+	% Municipality always denies requests to for others to sell their land, since the Municipality has enough land
+	% and wants owners of land to still adhere to Municipality wishes without having to own the land itself
+	forall bel(open_request("SELL_LAND", ID, _, _, _, _, _, _, _))
+		do adopt(answered_request("SELL_LAND", ID, 1)).
 		
 	%For all open requests that are left, accept them
 	forall bel(open_request(RequestType, ID, _, _, _, _, _, _, _)), not(goal(answered_request(_, ID, _))) do adopt(answered_request(RequestType, ID, 0)).
