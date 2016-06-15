@@ -17,6 +17,7 @@
 	my_stakeholder_id/1,
 	open_request/9,
 	park_area/2,
+	park_timeout/1,
 	request/2,
 	requests/1,
 	self/1,
@@ -37,8 +38,9 @@ money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,Li
 		 indicator(IndicatorID,Budget,_,_).
 
 % Get the indicator id of green
-green(IndicatorID,StakeholderID) :- my_stakeholder_id(StakeholderID), indicatorLink(StakeholderID,LinkIndicator),
-		member(indicatorWeights(IndicatorID,'Gemeente Groen', IndicatorWeight),LinkIndicator).
+green(ZoneLinkList) :- my_stakeholder_id(StakeholderID), indicatorLink(StakeholderID,LinkIndicator),
+		member(indicatorWeights(IndicatorID,'Gemeente Groen',_),LinkIndicator),
+		indicator(IndicatorID,_,_,ZoneLinkList).
 
 % Progress building azc
 azc(Result) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),

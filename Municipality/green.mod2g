@@ -1,33 +1,40 @@
 use dummy as knowledge.
 use tygron as actionspec.
 
-order = linearall.
+order = linearrandom.
 module green {
 	%Build green and parks to satisfy green indicator
-	
+	if bel(park_timeout(X), X>0, Y is X-1) then
+		delete(park_timeout(X)) + insert(park_timeout(Y)).
+		
 	%if we already have a goal for building a specific azc we exit.
 	if goal(buildPark(_)) then exit-module.
 	
 	%If we have no list of available land get it from the connector.
-	if bel(not(park_area(0,List)),
+	if bel(not(park_area(1,List)),
 		%do we have enough money
 		money(X), X>120000,
 		%find a zone that needs more green and we own land in
-		indicator(GreenIndicatorID,_,_,ZoneLinkList),
-		member(zone_link(ZoneID,GreenIndicatorID,Current,Target),ZoneLinkList),
-		Target =\= 0, (Current / Target)< 0.95,
+		green(ZoneLinkList),
+		%member(zone_link(ZoneID,_,Current,Target),ZoneLinkList))
+		%Current < Target,
 		land(_,StakeholderID,_,ZoneList,_),
 		member(ZoneID,ZoneList))
 		%we want a polygon
 		then get_relevant_areas(1, build, [amount(1), area(250,2000), zones(ZoneID)]).
 	
 	%Build park in one of the retrieved polygons
-	if bel(
-		%grab a polygon from our list
-		park_area(0,[[Poly|Y]|Rest])	,
-		%Check if we have the funds to build an azc
+	if bel(park_area(1,[[Poly|Y]|Rest]),
+		%Check if we have the funds to build a park
 		money(X), X>120000)
 		then adopt(buildPark(Poly)) + 
+		%update timeout
+		delete(park_timeout(0)) + insert(park_timeout(12)) +
 		%remove building option
-		delete(azc_area(0,[[Poly|Y]|Rest])).
+		delete(park_area(1,[[Poly|Y]|Rest])).
+		
+	%Delete the remaining list if building failed
+	if bel(park_area(0,List))
+		then delete(park_area(0,List))+ insert(park_timeout(20)).
+		
 }

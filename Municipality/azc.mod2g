@@ -6,8 +6,6 @@ module azc{
 	%if we have build an azc in the last ten cycles wait for indicators to update
 	if bel(azc_timeout(X), X>0, Y is X-1) then
 		delete(azc_timeout(X)) + insert(azc_timeout(Y)).
-	if bel(azc_timeout(X), X>0) then
-		exit-module.
 	
 	%if we already have a goal for building a specific azc we exit.
 	if goal(buildAZC(_)) then exit-module.
@@ -30,11 +28,9 @@ module azc{
 		then get_relevant_areas(0, build, [amount(5), area(MinArea, MaxArea), zones(Zone)]).
 	
 	%Build an azc in one of the retrieved polygons
-	if bel(
+	if bel(azc_area(0,[[Poly|Y]|Rest]),
 		%first check if there still is demand
 		azc(Azc), Azc>0,
-		%grab a polygon from our list
-		azc_area(0,[[Poly|Y]|Rest]),
 		%check if we have the funds to build an azc
 		money(X), X>(1200*20*Azc))
 		then adopt(buildAZC(Poly)) + 
@@ -46,5 +42,5 @@ module azc{
 	
 	%Delete the remaining list if building failed
 	if bel(azc_area(0,List))
-		then delete(azc_area(0,List)).
+		then delete(azc_area(0,List))+ insert(azc_timeout(100)).
 }
