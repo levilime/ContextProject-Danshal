@@ -2,6 +2,7 @@ use dummy as knowledge.
 use green as module.
 use azc as module.
 use negotiation as module.
+use observer as module.
 
 module tygronEvents {
 	
@@ -24,7 +25,7 @@ module tygronEvents {
 	
 	%Add the new one for each stakeholde.
 	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
-		do insert(actionlog(StakeholderID,Description,ActionID,IncList)).
+		do insert(actionlog(StakeholderID,Description,ActionID,IncList)).	
 	
 	%ZONE PERCEPT
 	%Zones should not be able to be added or deleted during a session. But they should be able to be changed.
@@ -101,6 +102,7 @@ module tygronEvents {
 	
 	%Go into the negotiation module only if there is an open request.
 	if bel(open_request(_,_,_,_,_,_,_,_,_)) then negotiation.
+	if true then observer.
 	
 	%Account for the indicator concerning green.
 	if true then green.

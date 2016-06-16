@@ -1,0 +1,33 @@
+use dummy as knowledge.
+
+order = linearall.
+
+%Observer module listens to all actionlogs and from it deduces if stakeholders
+%are doing well for the municipality or are being cheeky. This is an optional module
+%apart from the negotiation module to listen to all actionlogs instead of only
+%the ones that are connected to a request for the Municipality.
+
+module observer {
+	
+	%For all actionlogs that have no request to the Municipality
+	%do a setup to check the total score by multiplying the indicatorWeight and the increase/decrease for the action of the request.
+	forall bel( actionlog(StakeholderID, Description, ActionID, IncList), member([IndicatorID, Increase], IncList),
+	my_indicator(IndicatorID, Weight), Weighed_value is Increase * Weight)
+		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)).
+		
+	%Sum all the weighed values for the same actionID together.
+	forall bel(sum_indicators(ActionID, Weighed_value), total_sum(ActionID, OldSum), NewSum is OldSum + Weighed_value) do
+		delete(sum_indicators(ActionID, Weighed_value)) + delete(total_sum(ActionID, OldSum)) + insert(total_sum(ActionID, NewSum)).
+	
+	%For all actionlogs observed that increase the Municipality indicators,
+	%add favors from the good Stakeholder.
+	forall bel(actionlog(SenderID, Description, ActionID, IncList), total_sum(ActionID, Sum), Sum >= 0, feeling(SenderID, Favors), New_Favors is Favors + 1) do
+		delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)) + delete(actionlog(SenderID, Description, ActionID, IncList)).
+		
+	%For all actionlogs observed that lower the Municipality indicators,
+	%subbtract favors from the Stakeholder who schemed it
+	forall bel(actionlog(SenderID, Description, ActionID, IncList), total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), New_Favors is Favors - 2) do
+		delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)) + delete(actionlog(SenderID, Description, ActionID, IncList)).
+		
+	forall bel(feeling(SenderID, Favors), stakeholder(SenderID,Name,_,_)) do print(feeling(Name, Favors)).
+}
