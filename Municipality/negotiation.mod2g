@@ -6,7 +6,7 @@ module negotiation {
 	
 	%For all the open requests that have corresponding actionlogs and influenced indicators for the own stakeholder,
 	%do a setup to check the total score by multiplying the indicatorWeight and the increase/decrease for the action of the request.
-	forall bel( actionlogRequestLink(ID, SenderID, ActionID), actionlog(_,_,ActionID,IncList), member([IndicatorID, Increase], IncList),
+	forall bel( actionlogRequestLink("PERMIT", ID, SenderID, ActionID), actionlog(_,_,ActionID,IncList), member([IndicatorID, Increase], IncList),
 	my_indicator(IndicatorID, Weight), Weighed_value is Increase * Weight)
 		do insert(sum_indicators(ActionID, Weighed_value)) + insert(total_sum(ActionID, 0)).
 		
@@ -16,24 +16,44 @@ module negotiation {
 	
 	%For all open requests that have a total score higher or equal to 0, adopt the goal to accept it.
 	%For such a stakeholder that makes an improvement gains favor.
-	forall bel(actionlogRequestLink(ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum >= 0, feeling(SenderID, Favors), New_Favors is Favors + 1) do
-		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
+	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum >= 0, feeling(SenderID, Favors), New_Favors is Favors + 1) do
+		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
 		
 	%For all open requests that have a total score lower than 0 and no has no favors, adopt the goal to reject it.
 	%The favor of this stakeholder stays the same.
-	forall bel(actionlogRequestLink(ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors =< 0) do
-		adopt(answered_request(ID, 1)) + delete(total_sum(ActionID, Sum)).
+	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), Favors =< 0) do
+		adopt(answered_request("PERMIT", ID, 1))  + delete(total_sum(ActionID, Sum)).
 		
 	%For all open requests that have a total score lower than 0 and has favors, adopt the goal to accept it.
 	%The stakeholder belonging to this request loses favor.
-	forall bel(actionlogRequestLink(ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, 
-	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 1) do
-		adopt(answered_request(ID, 0)) + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
+	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, 
+	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 2) do
+		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)).
 		
-	%For all open requests without actionlogIDs, adopt the goal to accept it.	
-	forall bel(open_request(_, ID, _, _, [], _, _, _, _)) do adopt(answered_request(ID, 0)).
 		
-	%For all open requests that have an actionlogID, but do not have the actionlog in its belief base, adopt the goal to acccept it.	
-	forall bel(actionlogRequestLink(ID, _, ActionID), not(actionlog(_,_,ActionID,_))) 
-		do adopt(answered_request(ID, 0)).
+	% Accept Buy land request if price is sufficient
+	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList), not(CalcPrice == "NO_PRICE"), minpriceland(SenderID, MinPrice), CalcPrice >= MinPrice)
+		do adopt(answered_request("BUY_LAND", ID, 0)) + print(minpriceland(SenderID, MinPrice)) + print(CalcPrice).
+	
+	% Deny Buy land request if price is not sufficient
+	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, CalcPrice, Multipolygon, AreaSize, AnswerList), not(CalcPrice == "NO_PRICE") , minpriceland(SenderID, MinPrice), CalcPrice < MinPrice)
+		do adopt(answered_request("BUY_LAND", ID, 1)).
+		
+	% If there is no price do not accept the Buy Land Request
+	forall bel(open_request("BUY_LAND", ID, ContentLinkID, SenderID, ActionlogIDs, "NO PRICE", Multipolygon, AreaSize, AnswerList))
+		do adopt(answered_request("BUY_LAND", ID, 1)).
+		
+		
+	% Municipality always denies requests to for others to sell their land, since the Municipality has enough land
+	% and wants owners of land to still adhere to Municipality wishes without having to own the land itself
+	forall bel(open_request("SELL_LAND", ID, _, _, _, _, _, _, _))
+		do adopt(answered_request("SELL_LAND", ID, 1)).
+		
+	% Municipality always denies all requests that do not adhere to the zoning plan
+	forall bel(open_request("ZONING_PERMIT", ID, _, _, _, _, _, _, _))
+		do adopt(answered_request("ZONING_PERMIT", ID, 1)).
+		
+		
+	%For all open requests that are left, accept them
+	forall bel(open_request(RequestType, ID, _, _, _, _, _, _, _)), not(goal(answered_request(_, ID, _))) do adopt(answered_request(RequestType, ID, 0)).
 }
