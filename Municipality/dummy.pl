@@ -23,7 +23,8 @@
 	my_indicator/2,
 	sum_indicators/2,
 	total_sum/2,
-	feeling/2.
+	feeling/2,
+	history/3.
 
 %We have a building if the building list has at least 1 element.
 havebuilding :- true.

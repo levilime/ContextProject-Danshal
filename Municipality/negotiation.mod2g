@@ -22,7 +22,7 @@ module negotiation {
 		% also the corresponding actionlog entry in the belief base is deleted
 		% so we can additionally assign feelings to actionlogs that have no requests
 		% for the Municipality attached to them in the observer module.
-		delete(actionlog(StakeholderID, Description, ActionID, IncList)).
+		delete(actionlog(StakeholderID, Description, ActionID, IncList)) + insert(history(StakeholderID, Description, ActionID)).
 		
 	%For all open requests that have a total score lower than 0 and no has no favors, adopt the goal to reject it.
 	%The favor of this stakeholder stays the same.
@@ -32,7 +32,7 @@ module negotiation {
 		% also the corresponding actionlog entry in the belief base is deleted
 		% so we can additionally assign feelings to actionlogs that have no requests
 		% for the Municipality attached to them in the observer module.
-		delete(actionlog(StakeholderID, Description, ActionID, IncList)).
+		delete(actionlog(StakeholderID, Description, ActionID, IncList)) + insert(history(StakeholderID, Description, ActionID)).
 		
 	%For all open requests that have a total score lower than 0 and has favors, adopt the goal to accept it.
 	%The stakeholder belonging to this request loses favor.
@@ -42,7 +42,7 @@ module negotiation {
 		% also the corresponding actionlog entry in the belief base is deleted
 		% so we can additionally assign feelings to actionlogs that have no requests
 		% for the Municipality attached to them in the observer module.
-		delete(actionlog(StakeholderID, Description, ActionID, IncList)).
+		delete(actionlog(StakeholderID, Description, ActionID, IncList)) + insert(history(StakeholderID, Description, ActionID)).
 		
 		
 	% Accept Buy land request if price is sufficient
@@ -65,8 +65,7 @@ module negotiation {
 		
 	% Municipality always denies all requests that do not adhere to the zoning plan
 	forall bel(open_request("ZONING_PERMIT", ID, _, _, _, _, _, _, _))
-		do adopt(answered_request("ZONING_PERMIT", ID, 1)).
-		
+		do adopt(answered_request("ZONING_PERMIT", ID, 1)).		
 		
 	%For all open requests that are left, accept them
 	forall bel(open_request(RequestType, ID, _, _, _, _, _, _, _)), not(goal(answered_request(_, ID, _))) do adopt(answered_request(RequestType, ID, 0)).

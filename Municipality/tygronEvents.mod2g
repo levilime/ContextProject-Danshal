@@ -23,8 +23,8 @@ module tygronEvents {
 	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,_,_,_),ActList), actionlog(StakeholderID,OldDescription,OldActionID,OldIncList))
 		do delete(actionlog(StakeholderID,OldDescription,OldActionID,OldIncList)).
 	
-	%Add the new one for each stakeholde.
-	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
+	%Add all new actionlogs.
+	forall percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList), not(history(StakeholderID, Description, ActionID)))
 		do insert(actionlog(StakeholderID,Description,ActionID,IncList)).	
 	
 	%ZONE PERCEPT
@@ -90,7 +90,7 @@ module tygronEvents {
 		member(request("INFORMATION", "PERMIT", _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
 		do insert(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
-	forall percept(requests(List)), bel(member(request(_, "ZONING_PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+	forall percept(requests(List)), bel(member(request("INTERACTION", "ZONING_PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
 		member(request("INFORMATION", _, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
 		do insert(open_request("ZONING_PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
