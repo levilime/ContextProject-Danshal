@@ -96,7 +96,7 @@ test tygronEvents with
 	}
 	post{true}
 	
-test negotation with
+test negotiation with
 	pre{true}
 	in{
 		
