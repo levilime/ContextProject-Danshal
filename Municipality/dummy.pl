@@ -49,10 +49,6 @@ indicatorCompleted(IndicatorID) :- indicator(IndicatorID,CompleteCurrent,Complet
 %<IndicatorName> - For a given name of an indicator, check if it is completed.
 specificIndicatorCompleted(IndicatorName) :- getSpecificIndicatorID(IndicatorName,IndicatorID), indicatorCompleted(IndicatorID).
 
-
-%We have a building if the building list has at least 1 element.
-havebuilding :- false.
-
 % Get our current budget
 money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
 		 member(indicatorWeights(IndicatorID,'Budget Gemeente',_),LinkIndicator),
