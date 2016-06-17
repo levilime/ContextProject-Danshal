@@ -5,6 +5,7 @@ use azc as module.
 use tygronEvents as module.
 use tygronInit as module.
 use somegoal as goals.
+use negotiation as module.
 
 timeout = 300.
 
@@ -13,7 +14,7 @@ test tygron with
 	in{
 		%If you have the goal to answer a request then answer it, regardless of the answer.
 		%We don't check on the function prerequisite as it is always present.
-		goal(answered_request(RequestID,AnswerID)) leadsto done(popup_answer(RequestID,AnswerID)).
+		goal(answered_request(RequestType,RequestID,AnswerID)) leadsto done(popup_answer(RequestID,AnswerID)).
 		
 		%If you have the goal to build an AZC or Park or Road, plan to construct one.
 		goal(buildPark(ZoneID,MultiPolygon)) leadsto done(building_plan_construction(_, 1, MultiPolygon)).
