@@ -17,11 +17,10 @@ module tygron {
 	
 	% If there is a goal to have a park, build a park.
 	% Add budget restriction rule, don't build a park when low on money!
-	if goal(buildPark(ZoneID,MultiPolygon)), bel(functions(FunctionList), member(['stadspark',FunctionID,List],FunctionList)) 
+	if goal(buildPark(ZoneID,MultiPolygon)), bel(function('stadspark',FunctionID,_)) 
 		then building_plan_construction(FunctionID, 1, MultiPolygon).
 	
 	% If there is a goal to have an AZC, build an AZC.
 	if goal(buildAZC(MultiPolygon)), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList))
 		then building_plan_construction(FunctionID, 1, MultiPolygon).
-	
 }
