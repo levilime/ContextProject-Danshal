@@ -5,6 +5,17 @@ use negotiation as module.
 
 module tygronEvents {
 	
+	%RELEVANT AREA PERCEPT
+	%Percepts the relevant area's from the get_relevant_area's action
+	if percept(relevant_areas(CallerID,Areas)), 
+			not(bel(azc_area(CallerID,Areas))) 
+			then insert(azc_area(CallerID,Areas)).
+	
+	if percept(relevant_areas(CallerID,Areas)), 
+			bel(azc_area(CallerID,OldAreas)) 
+			then delete(azc_area(CallerID,OldAreas)) 
+			+ insert(azc_area(CallerID,Areas)).
+	
 	%INDICATOR PERCEPT
 	%Indicator should not be able to be added or deleted during a session. But their current value can change
 	%during session.
@@ -84,6 +95,15 @@ module tygronEvents {
 		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), (AreaSize == "NO_SIZE"; Price == "NO_PRICE"))
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
+	%Only put those requests in the belief base that we need to answer.
+	forall percept(requests(List)), bel(member(request("INTERACTION_WITH_DATE", "PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", "PERMIT", _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
+		do insert(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
+		
+	forall percept(requests(List)), bel(member(request(_, "ZONING_PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", _, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
+		do insert(open_request("ZONING_PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
+		
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
@@ -96,6 +116,7 @@ module tygronEvents {
 	%If we don't have built a big enough AZC yet, go to the module handling that.
 	if bel(not(specificIndicatorCompleted('AZC'))) then azc.
 
-	%Go into the negotiation module.
-	if true then negotiation.
+	%Go into the negotiation module only if there is an open request.
+	if bel(open_request(_,_,_,_,_,_,_,_,_)) then negotiation.
+	
 }

@@ -8,7 +8,6 @@ timeout = 300.
 test tygron with
 	pre{true}
 	in{ 
-		
 		%If a percept is perceived, insert it.
 		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
 		
@@ -46,19 +45,6 @@ test tygron with
 
 	}
 	post{true}		
-	
-test azc with
-	pre{true}
-	in{ 
-		%Test azc module (azc has id 650)
-		percept(money(1)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
-			leadsto not(goal(buildAZC)).%to little money
-		percept(money(999999)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
-			leadsto goal(buildAZC).%enough money
-		percept(money(999999)), building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)
-			leadsto not(goal(buildAZC)).%should fail, no need	
-	}
-	post{true}	
 	
 	tygron {
 		do tygron.
