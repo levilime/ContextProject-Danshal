@@ -96,6 +96,14 @@ test tygronEvents with
 	}
 	post{true}
 	
+test negotation with
+	pre{true}
+	in{
+		
+		
+		
+	}
+	post{true}
 	tygronagent {
 		do tygron.
 		do tygronInit.
