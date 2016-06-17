@@ -1,64 +1,112 @@
 use Tygron as mas.
 use dummy as knowledge.
 use tygron as module.
+use azc as module.
+use tygronEvents as module.
+use tygronInit as module.
 use somegoal as goals.
+use negotiation as module.
 
 timeout = 300.
 
 test tygron with
 	pre{true}
-	in{ 
-		%If a percept is perceived, insert it.
-		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
+	in{
+		%If you have the goal to answer a request then answer it, regardless of the answer.
+		%We don't check on the function prerequisite as it is always present.
+		goal(answered_request(RequestType,RequestID,AnswerID)) leadsto done(popup_answer(RequestID,AnswerID)).
 		
-		%If a percept list is perceived, then for every member of the list, check if it is inserted as belief.
-		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(indicators(List)),bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)) 
-			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
-		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriesList),List)) 
-			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
-		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)) 
-			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors))).
-		percept(stakeholders(List)), bel(member(SubList, List), 
-			member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList)))) 
-			leadsto bel(stakeholder(StakeholderID,Name,StartBudget,Income)).
-		percept(stakeholders(List)), bel(member(SubList, List), 
-			member(indicatorLink(StakeholderID,IndWeights), SubList)))) 
-			leadsto bel(indicatorLink(StakeholderID,IndWeights)).
-		percept(action_logs(ActList)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),ActList))
-			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
-		percept(functions(FuncList)), bel(member([FuncName,FuncID,CategoriesList], FuncList))
-			leadsto bel(function(FuncName,FuncID,CategoriesList)).
-		
-		%If a percept list is perceived, which doesn't contain a percept which we first belief was true, delete that belief.
-		%These tests have been made according to the templates in the GOAL Programming guide.
-		percept(buildings(List)), bel(building(ID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),
-			not(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List)))
-			leadsto not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,Floors))).
-				
-		percept(action_logs(ActList)), bel(actionlog(StakeholderID,Description,ActionID,IncList),
-			not(member(actionlog(StakeholderID,Description,ActionID,IncList), ActList)))
-			leadsto not(bel(actionlog(StakeholderID,Description,ActionID,IncList))).
-			
-		%There are some beliefs that should never be deleted. These tests make sure that never happens.
-		always(bel(my_stakeholder_id(_))).
-
+		%If you have the goal to build an AZC or Park or Road, plan to construct one.
+		goal(buildPark(ZoneID,MultiPolygon)) leadsto done(building_plan_construction(_, 1, MultiPolygon)).
+		%Add tests later for the other goals when they are not hardcoded in the module.
 	}
 	post{true}		
 	
-test azc with
+test tygronInit with
 	pre{true}
 	in{ 
-		%Test azc module (azc has id 650)
-		percept(money(1)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
-			leadsto not(goal(buildAZC)).%to little money
-		percept(money(999999)), not(bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)))
-			leadsto goal(buildAZC).%enough money
-		percept(money(999999)), building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,650,Floors)
-			leadsto not(goal(buildAZC)).%should fail, no need	
+		%A predicate that is perceived should be added to the belief base.
+		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
+		
+		percept(stakeholders(List)), bel(member(SubList, List), member(stakeholder(StakeholderID,Name,StartBudget,Income), SubList))
+			leadsto bel(stakeholder(StakeholderID,Name,StartBudget,Income)).
+		
+		percept(stakeholders(List)), bel(member(SubList, List), member(indicatorLink(StakeholderID,IndWeights), SubList))
+			leadsto bel(indicatorLink(StakeholderID,IndWeights)).
+		
+		percept(indicators(List)), bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List))
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		
+		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriestList),List))
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		
+		percept(lands(List)), bel(member(land(LandID,OwnerID,MultiPolygon,ZoneList,Size),List))
+			leadsto bel(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
+			
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
 	}
-	post{true}	
+	post{true}
+
+%Tests for the event module	
+test tygronEvents with
+	pre{true}
+	in{
+		
+		%A predicate that is perceived should always be inserted.
+		percept(indicators(List)), bel(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List))
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		
+		percept(action_logs(List)), bel(member(actionlog(StakeholderID,Description,ActionID,IncList),List))
+			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
+			
+		percept(buildings(List)), bel(member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+			
+		percept(zones(List)), bel(member(zone(ZoneID,Name,Floors,Size,CategoriestList),List))
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		
+		percept(lands(List)), bel(member(land(LandID,OwnerID,MultiPolygon,ZoneList,Size),List))
+			leadsto bel(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
+			
+		percept(request(List)), bel(member(request("INTERACTION", RequestType, ID, ContentLinkID, [SenderID|_], ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List))
+			leadsto bel(request("INTERACTION", RequestType, ID, ContentLinkID, SendrID, ActionlogIDs, _, Multipolygon, AreaSize, AnswerList)).
+		
+		%A predicate that is not perceived should be deleted.	
+		percept(indicators(List)), bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList), 
+			not(member(indicator(IndicatorID,Current,Target,ZoneIndicatorsList),List)))
+			leadsto bel(indicator(IndicatorID,Current,Target,ZoneIndicatorsList)).
+		
+		percept(action_logs(List)), bel(actionlog(StakeholderID,Description,ActionID,IncList),
+			not(member(actionlog(StakeholderID,Description,ActionID,IncList),List)))
+			leadsto bel(actionlog(StakeholderID,Description,ActionID,IncList)).
+			
+		percept(buildings(List)), bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),
+			member(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors),List))
+			leadsto bel(building(BuildingID,Name,OwnerID,ConstructionYear,CategoriesList,FuncID,Floors)).
+			
+		percept(zones(List)), bel(zone(ZoneID,Name,Floors,Size,CategoriesList),
+			not(member(zone(ZoneID,Name,Floors,Size,CategoriestList),List)))
+			leadsto bel(zone(ZoneID,Name,Floors,Size,CategoriesList)).
+		
+		percept(lands(List)), bel(land(LandID,Owner,MultiPolygon,ZoneList,Size),
+			not(member(land(LandID,OwnerID,MultiPolygon,ZoneList,Size),List)))
+			leadsto bel(land(LandID,OwnerID,MultiPolygon,ZoneList,Size)).
+		
+	}
+	post{true}
 	
-	tygron {
+test negotiation with
+	pre{true}
+	in{
+		
+		
+		
+	}
+	post{true}
+	tygronagent {
 		do tygron.
+		do tygronInit.
+		do tygronEvents.
+		
 	}
