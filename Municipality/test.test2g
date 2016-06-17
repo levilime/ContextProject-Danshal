@@ -24,7 +24,6 @@ test tygron with
 test tygronInit with
 	pre{true}
 	in{ 
-		
 		%A predicate that is perceived should be added to the belief base.
 		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
 		
