@@ -95,14 +95,23 @@ module tygronEvents {
 		member(request("INFORMATION", RequestType, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List), (AreaSize == "NO_SIZE"; Price == "NO_PRICE"))
 		do insert(open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 		
+	%Only put those requests in the belief base that we need to answer.
+	forall percept(requests(List)), bel(member(request("INTERACTION_WITH_DATE", "PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", "PERMIT", _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
+		do insert(open_request("PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
+		
+	forall percept(requests(List)), bel(member(request(_, "ZONING_PERMIT", ID, ContentLinkID, _, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList),List),
+		member(request("INFORMATION", _, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
+		do insert(open_request("ZONING_PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
+		
 	%Percept rules by Wouter Pasman
 	%Deletes the old functions list and insert the new one if there is an update of the functions
 	if percept(functions(X)), bel(functions(Y)) then delete(functions(Y)) + insert(functions(X)).
 	%Deletes the old settings list and insert the new one if there is an update of the settings
 	if percept(settings(X)), bel(settings(Y)) then delete(settings(Y)) + insert(settings(X)).
 	
-	%Go into the negotiation module.
-	if true then negotiation.
+	%Go into the negotiation module only if there is an open request.
+	if bel(open_request(_,_,_,_,_,_,_,_,_)) then negotiation.
 	
 	%Account for the indicator concerning green.
 	if true then green.

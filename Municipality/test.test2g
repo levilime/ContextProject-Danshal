@@ -8,7 +8,6 @@ timeout = 300.
 test tygron with
 	pre{true}
 	in{ 
-		
 		%If a percept is perceived, insert it.
 		percept(my_stakeholder_id(StakeholderID)) leadsto bel(my_stakeholder_id(StakeholderID)).
 		

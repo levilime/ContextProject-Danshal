@@ -23,6 +23,8 @@
 	settings/1,
 	stakeholder/4,
 	stakeholders/1,
+	answered_request/3,
+	my_indicator/2,
 	sum_indicators/2,
 	total_sum/2,
 	zone/5,
@@ -48,5 +50,10 @@ buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
 buildAZC(MultiPolygon) :- attempttoBuild(MultiPolygon).
 
 %Link the actionlogs to the open requests that need to be answered.
-actionlogRequestLink(ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
+actionlogRequestLink(RequestType, ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
 	member(ActionID, ActionlogIDs).
+	
+minpriceland(ID, 150) :- stakeholder(ID, "DUWO",_,_).
+minpriceland(ID, 450) :- stakeholder(ID, "Private Woningbouw Burgers",_,_).
+minpriceland(ID, 300) :- stakeholder(ID, "TU",_,_).
+minpriceland(ID, 250) :- stakeholder(ID, "Voorzieningen",_,_).
