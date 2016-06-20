@@ -7,7 +7,7 @@ use tygronInit as module.
 use somegoal as goals.
 use negotiation as module.
 
-timeout = 300.
+timeout = 55.
 
 test tygron with
 	pre{true}
