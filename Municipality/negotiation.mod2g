@@ -27,7 +27,7 @@ module negotiation {
 	%For all open requests that have a total score lower than 0 and no has no favors, adopt the goal to reject it.
 	%The favor of this stakeholder stays the same.
 	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0,
-		feeling(SenderID, Favors), Favors =< 0, actionlog(StakeholderID, Description, ActionID, IncList)) do
+		feeling(SenderID, Favors), Favors < 0, actionlog(StakeholderID, Description, ActionID, IncList)) do
 		adopt(answered_request("PERMIT", ID, 1))  + delete(total_sum(ActionID, Sum)) + 
 		% also the corresponding actionlog entry in the belief base is deleted
 		% so we can additionally assign feelings to actionlogs that have no requests
@@ -37,7 +37,7 @@ module negotiation {
 	%For all open requests that have a total score lower than 0 and has favors, adopt the goal to accept it.
 	%The stakeholder belonging to this request loses favor.
 	forall bel(actionlogRequestLink("PERMIT", ID, SenderID, ActionID), total_sum(ActionID, Sum), Sum < 0, 
-	feeling(SenderID, Favors), Favors > 0, New_Favors is Favors - 2, actionlog(StakeholderID, Description, ActionID, IncList)) do
+	feeling(SenderID, Favors), Favors < 0, New_Favors is Favors - 2, actionlog(StakeholderID, Description, ActionID, IncList)) do
 		adopt(answered_request("PERMIT", ID, 0))  + delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)) + 
 		% also the corresponding actionlog entry in the belief base is deleted
 		% so we can additionally assign feelings to actionlogs that have no requests

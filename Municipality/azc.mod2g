@@ -15,11 +15,11 @@ module azc{
 	%If we have no list of available land get it from the connector.
 	if bel(not(azc_area(0,List)),
 		%find maximal neccesary size
-		azc(Azc), Azc>0,
-		MaxArea is 20*Azc+1000,
+		azc(Azc), Azc>0, azcIndpersqmeter(Unit),
+		MaxArea is Unit*Azc + 1000,
 		MinArea is max(MaxArea/4,500),
 		%do we have enough money
-		money(X), X>(750*20*Azc),
+		money(X), priceAZC(Price), X>= Price*MaxArea,
 		%find a zone that support an azc and that we own land in
 		my_stakeholder_id(StakeholderID),
 		land(_,StakeholderID,_,ZoneList,_),
@@ -34,9 +34,7 @@ module azc{
 		%first check if there still is demand
 		azc(Azc), Azc>0,
 		%grab a polygon from our list
-		azc_area(0,[[Poly|Y]|Rest])	,
-		%Check if we have the funds to build an azc
-		money(X), X>(1200*20*Azc))
+		azc_area(0,[[Poly|Y]|Rest]))
 		then adopt(buildAZC(Poly)) + 
 		%update timeout
 		delete(azc_timeout(0)) + insert(azc_timeout(10)) +
