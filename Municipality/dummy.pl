@@ -67,6 +67,9 @@ actionlogRequestLink(RequestType, ID, SenderID, ActionID) :- open_request(Reques
 
 usefulFunctions(['azc','stadspark']).
 
+pricePark(60).
+priceAZC(1200).
+
 minpriceland(ID, 150) :- stakeholder(ID, "DUWO",_,_).
 minpriceland(ID, 450) :- stakeholder(ID, "Private Woningbouw Burgers",_,_).
 minpriceland(ID, 300) :- stakeholder(ID, "TU",_,_).
