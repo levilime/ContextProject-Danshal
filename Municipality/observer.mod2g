@@ -26,7 +26,7 @@ module observer {
 		
 	%For all actionlogs observed that lower the Municipality indicators,
 	%subbtract favors from the Stakeholder who schemed it
-	forall bel(actionlog(SenderID, Description, ActionID, IncList), total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), New_Favors is Favors - 2) do
+	forall bel(actionlog(SenderID, Description, ActionID, IncList), total_sum(ActionID, Sum), Sum < 0, feeling(SenderID, Favors), New_Favors is Favors - 1) do
 		delete(total_sum(ActionID, Sum)) + delete(feeling(SenderID, Favors)) + insert(feeling(SenderID, New_Favors)) + delete(actionlog(SenderID, Description, ActionID, IncList))
 		 + insert(history(SenderID, Description, ActionID)).
 		
