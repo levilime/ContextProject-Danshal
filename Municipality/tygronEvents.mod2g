@@ -105,11 +105,14 @@ module tygronEvents {
 		member(request("INFORMATION", _, _, ContentLinkID, [SenderID|_], _, _, _,  _, _), List))
 		do insert(open_request("ZONING_PERMIT", ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList)).
 	
+	%If we don't have enough green yet so our target is made, go to the module handling that.
+	if bel(not(specificIndicatorCompleted('Gemeente Groen'))) then green.
+	
+	%If we don't have built a big enough AZC yet, go to the module handling that.
+	if bel(not(specificIndicatorCompleted('AZC'))) then azc.
+
 	%Go into the negotiation module only if there is an open request.
 	if bel(open_request(_,_,_,_,_,_,_,_,_)) then negotiation.
 	if bel(actionlog(_,_,_,_)) then observer.
 	
-	%Account for the indicator concerning green.
-	if true then green.
-	if true then azc.
 }

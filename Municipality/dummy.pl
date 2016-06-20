@@ -25,8 +25,24 @@
 	zone/5,
 	history/3.
 
-%We have a building if the building list has at least 1 element.
-havebuilding :- true.
+%getMyIndicatorList/1 - getMyIndicatorList(IndicatorList)
+%<IndicatorList> - A list of indicatorWeights representing all our indicators. Output variable.
+getMyIndicatorList(IndicatorList) :- my_stakeholder_id(StakeholderID), indicatorLink(StakeholderID, IndicatorList).
+
+%getSpecificIndicatorID/2 - getSpecificIndicatorID(<IndicatorName>,<IndicatorID>)
+%<IndicatorName> - Name of the indicator in the IndicatorWeights percept - Input variable.
+%<IndicatorID> - Numeral ID representing that specific indicator. - Output variable.
+getSpecificIndicatorID(IndicatorName,IndicatorID) :- getMyIndicatorList(IndicatorList),
+						member(indicatorWeights(IndicatorID,IndicatorName,_),IndicatorList).
+
+%indicatorCompletedID/1 - indicatorCompleted(<IndicatorID>)
+%<IndicatorID> - Checks for this indicator ID if it is completed.				
+indicatorCompleted(IndicatorID) :- indicator(IndicatorID,CompleteCurrent,CompleteTarget,ZoneLinkList), CompleteCurrent > CompleteTarget,
+					not((member(zone_link(_,_,ZoneCurrent,ZoneTarget),ZoneLinkList), ZoneCurrent < ZoneTarget)).
+					
+%specificIndicatorCompleted/1 - indicatorCompleted(<IndicatorName>)
+%<IndicatorName> - For a given name of an indicator, check if it is completed.
+specificIndicatorCompleted(IndicatorName) :- getSpecificIndicatorID(IndicatorName,IndicatorID), indicatorCompleted(IndicatorID).
 
 % Get our current budget
 money(Budget) :- my_stakeholder_id(StakeholderID),indicatorLink(StakeholderID,LinkIndicator),
