@@ -60,6 +60,9 @@ buildPark(ZoneID,MultiPolygon) :- attempttoBuild(MultiPolygon).
 % We want a azc if we need it
 buildAZC(MultiPolygon) :- attempttoBuild(MultiPolygon).
 
+% Amount of square meter for one point of the azc indicator
+azcIndpersqmeter(20).
+
 %Link the actionlogs to the open requests that need to be answered.
 actionlogRequestLink(RequestType, ID, SenderID, ActionID) :- open_request(RequestType, ID, ContentLinkID, SenderID, ActionlogIDs, Price, Multipolygon, AreaSize, AnswerList), 
 	member(ActionID, ActionlogIDs).
@@ -68,7 +71,7 @@ actionlogRequestLink(RequestType, ID, SenderID, ActionID) :- open_request(Reques
 usefulFunctions(['azc','stadspark']).
 
 pricePark(60).
-priceAZC(1200).
+priceAZC(0).
 
 minpriceland(ID, 150) :- stakeholder(ID, "DUWO",_,_).
 minpriceland(ID, 450) :- stakeholder(ID, "Private Woningbouw Burgers",_,_).
