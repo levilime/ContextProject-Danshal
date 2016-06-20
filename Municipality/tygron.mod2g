@@ -21,6 +21,6 @@ module tygron {
 		then building_plan_construction(FunctionID, 1, MultiPolygon).
 	
 	% If there is a goal to have an AZC, build an AZC.
-	if goal(buildAZC(MultiPolygon)), bel(functions(FunctionList), member(['azc',FunctionID,List],FunctionList))
+	if goal(buildAZC(MultiPolygon)),bel(function('azc',FunctionID,_))
 		then building_plan_construction(FunctionID, 1, MultiPolygon).
 }
